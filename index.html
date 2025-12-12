@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 夏．北歐神話與童話之旅</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #141414;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        /* Netflix 橫向捲軸 */
+        .netflix-row {
+            display: flex;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 20px 0 20px 20px;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+        .netflix-row::-webkit-scrollbar { display: none; }
+        
+        .card {
+            flex: 0 0 auto;
+            width: 300px;
+            margin-right: 12px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            z-index: 10;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+            border: 2px solid white;
+        }
+        
+        .hero-overlay {
+            background: linear-gradient(to top, #141414 10%, rgba(20,20,20,0.6) 50%, rgba(20,20,20,0.3) 100%);
+        }
+        
+        /* 詳細視窗樣式 */
+        #detail-modal {
+            background-color: rgba(0,0,0,0.95);
+            backdrop-filter: blur(5px);
+        }
+
+        /* 模擬點擊互動的提示動畫 */
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+        .click-hint {
+            animation: pulse-border 2s infinite;
+        }
+        
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fade-in-up 1s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="relative h-[90vh] w-full overflow-hidden bg-gray-900">
+        <img src="cover.jpg" 
+             class="absolute top-0 left-0 w-full h-full object-cover" 
+             alt="Cover Image"
+             onerror="this.style.display='none';"> 
+        
+        <div class="absolute top-0 left-0 w-full h-full hero-overlay z-10"></div>
+
+        <div class="absolute bottom-[25%] left-[5%] max-w-3xl px-4 z-20 animate-fade-in-up">
+            <div class="flex items-center mb-4">
+                <span class="text-red-600 font-black tracking-[0.3em] text-sm uppercase bg-black/40 backdrop-blur-sm px-3 py-1 rounded">NORDIC SERIES</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-black mb-6 drop-shadow-2xl leading-tight text-white">
+                2026 夏<br>
+                北歐神話與童話之旅
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-200 mb-8 drop-shadow-lg font-medium max-w-2xl leading-relaxed">
+                23 天的史詩冒險。從羅弗敦的午夜太陽，到挪威峽灣的壯麗，最後走進安徒生的童話王國。
+            </p>
+
+            <div class="flex items-center gap-4">
+                <button onclick="scrollToContent()" class="play-btn bg-white text-black rounded px-6 py-2 font-bold hover:bg-gray-200 transition flex items-center">
+                    <i class="fas fa-play mr-2"></i> 開始旅程
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="content" class="pb-20 -mt-24 relative z-10 pl-4 md:pl-12">
+        <h2 class="text-xl md:text-2xl font-bold mb-4 text-white pl-2 drop-shadow-md flex items-center">
+            <i class="fas fa-sun text-yellow-500 mr-2"></i> 第一章：追逐午夜太陽 (羅弗敦群島)
+        </h2>
+        <div class="netflix-row mb-12" id="row-1"></div>
+
+        <h2 class="text-xl md:text-2xl font-bold mb-4 text-white pl-2 drop-shadow-md flex items-center">
+            <i class="fas fa-water text-blue-400 mr-2"></i> 第二章：峽灣與冰河的詠嘆 (挪威西部)
+        </h2>
+        <div class="netflix-row mb-12" id="row-2"></div>
+
+        <h2 class="text-xl md:text-2xl font-bold mb-4 text-white pl-2 drop-shadow-md flex items-center">
+            <i class="fas fa-crown text-yellow-600 mr-2"></i> 第三章：維京古都與童話王國 (城市之旅)
+        </h2>
+        <div class="netflix-row mb-12" id="row-3"></div>
+    </div>
+
+    <div id="detail-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
+        
+        <div class="bg-[#181818] w-full max-w-7xl rounded-xl shadow-2xl overflow-hidden relative border border-gray-700 transform transition-all scale-100 flex flex-col h-[90vh]">
+            
+            <div class="flex justify-between items-center p-4 bg-[#222] border-b border-gray-700 z-50">
+                <div>
+                    <span id="modal-day-badge" class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded inline-block shadow mr-3">DAY 1</span>
+                    <span id="modal-title" class="text-lg font-bold text-white"></span>
+                </div>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white text-2xl transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="flex-grow relative overflow-hidden flex flex-col md:flex-row">
+                
+                <div id="view-schedule" class="w-full h-full flex flex-col items-center justify-center bg-black relative group transition-opacity duration-300">
+                    
+                    <div class="relative max-w-full max-h-full cursor-pointer" onclick="switchView('text')">
+                        <img id="modal-schedule-img" src="" class="max-h-[80vh] object-contain shadow-2xl" 
+                             onload="this.style.display='block'; document.getElementById('sched-error').style.display='none';"
+                             onerror="this.style.display='none'; document.getElementById('sched-error').style.display='flex';">
+                        
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div class="bg-white/90 text-black px-6 py-3 rounded-full font-bold transform scale-90 group-hover:scale-100 transition shadow-lg click-hint">
+                                <i class="fas fa-book-open mr-2"></i> 點擊閱讀詳細文字導覽
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="sched-error" class="hidden flex-col items-center justify-center text-gray-500 absolute inset-0">
+                        <i class="fas fa-image text-5xl mb-4"></i>
+                        <p class="font-mono text-sm">Missing: <span id="missing-schedule-name"></span></p>
+                    </div>
+                </div>
+
+                <div id="view-text" class="hidden w-full h-full bg-[#121212] flex-col relative transition-opacity duration-300">
+                    <button onclick="switchView('image')" class="absolute top-4 left-4 z-50 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-full shadow-lg border border-gray-600 flex items-center transition">
+                        <i class="fas fa-arrow-left mr-2"></i> 返回行程圖
+                    </button>
+
+                    <div class="overflow-y-auto h-full p-8 md:p-16 max-w-4xl mx-auto">
+                        <div class="prose prose-invert prose-lg max-w-none">
+                            <h2 class="text-3xl font-bold text-teal-400 mb-6 border-b border-gray-700 pb-4">
+                                <i class="fas fa-map-marked-alt mr-3"></i>當日詳細導覽
+                            </h2>
+                            <div id="modal-text-content" class="text-gray-300 leading-relaxed space-y-6">
+                                載入中...
+                            </div>
+                        </div>
+                        
+                        <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
+                            <p>2026 Nordic Journey • Day Log</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 資料設定：包含縮圖檔名、行程圖檔名、以及詳細文字內容
+        // 為了讓您看到效果，我將「詳細文字」整合在這裡。
+        // 未來若要修改文字，直接修改這裡的 `details` 欄位即可。
+        
+        const itineraryData = [
+            { day: 1, title: "啟程：羅弗敦追日日記", region: 1, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D1 (7/4) 行程總覽：追逐午夜太陽的長征</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**轉機銜接**、**博德渡輪**（Bodø - Moskenes）、**羅弗敦群島初見**、**入住漁屋**</p>
+                <p>針對您 D1 (7/4) 的行程，這是一個非常「硬派」且緊湊的移動日。從台灣飛抵奧斯陸，再轉機、租車、搭渡輪，最後抵達羅弗敦群島（Lofoten），這需要非常精準的時間銜接。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">13:00 - 14:30 | 抵達博德 (Bodø) 與 提車</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**博德機場** (Bodø Lufthavn, BOO)</li>
+                    <li>活動：班機抵達後，請盡速前往租車櫃台（Hertz, Avis, Sixt 等通常都在航廈內）。</li>
+                    <li>導遊提醒：雖然您的需求提到「在碼頭租車」，但通常在機場取車最方便，因為機場離碼頭開車僅需 5-10 分鐘。若您已預約在碼頭取車，請搭乘計程車前往市中心碼頭。</li>
+                    <li>導航設定目的地：**Bodø ferjekai** (Ferry Terminal)。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:30 - 15:00 | 前往博德渡輪碼頭 (Bodø Ferjekai)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：自駕 (約 2-3 公里，5 分鐘車程)。</li>
+                    <li>活動：抵達碼頭排隊等待上船。</li>
+                    <li>導遊重要叮嚀：**務必提前預訂！** 7月的博德-莫斯肯斯（Bodø - Moskenes）渡輪非常熱門。請務必在 **Torghatten Nord** 官網預訂車位（Vehicle + Drivers）。如果您有預訂，請務必在開船前 **45分鐘** 抵達排隊車道，否則預訂可能會失效。在此處可以去碼頭旁的便利商店或超市買點輕食，渡輪上有販賣部但選擇較少。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:00 - 19:30 | 橫越韋斯特峽灣 (Vestfjorden)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：渡輪 (Ferry) - 營運商：Torghatten Nord</li>
+                    <li>路線：**Bodø → Moskenes**</li>
+                    <li>航程：約 3 至 3.5 小時。</li>
+                    <li>船上體驗：這是進入羅弗敦群島最震撼的方式。當船接近 Moskenes 時，被稱為「**羅弗敦之牆 (Lofoten Wall)**」的尖銳山峰會從海平面升起，非常壯觀。建議到甲板上拍照，即使是晚上，天色依然明亮（永晝）。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">19:30 - 20:00 | 抵達莫斯肯斯 (Moskenes) & 踏上羅弗敦</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：Moskenes Ferry Port</li>
+                    <li>路況：下船後只有一條主要道路 **E10 公路**（King Olav V's Road）。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">20:00 - 20:30 | 前往雷納 (Reine)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>距離：約 5-6 公里 (車程約 10 分鐘)。</li>
+                    <li>沿途景色：剛下船這段 E10 公路就是精華！左手邊是陡峭的山壁，右手邊是深藍的大海。您會經過 Sørvågen 小鎮，然後抵達被譽為「挪威最美村莊」的 Reine。</li>
+                    <li>導遊建議：雖然景色很美，但考量長途飛行的時差與疲勞，建議直奔住宿點，明天有整天的時間可以探索。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">20:30 - 21:30 | 辦理入住 & 晚餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>住宿建議：**Reine Rorbuer** (雷納漁屋) 或 **Eliassen Rorbuer** (伊萊亞森漁屋) - 都是經典的紅色漁屋。</li>
+                    <li>晚餐：如果抵達時間較晚，當地的餐廳（如 Gammelbua 或 Krambua）可能接近打烊（通常 21:00-22:00 關廚房）。建議：可以在 Bodø 買好簡易晚餐，或確認住宿點是否有附設餐廳並提前訂位。如果住漁屋（通常有小廚房），煮一碗從台灣帶來的泡麵配上窗外的峽灣景色，是第一晚最療癒的選擇。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">21:30 - 23:00 | 享受午夜太陽 (Midnight Sun)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：在漁屋周邊散步。</li>
+                    <li>亮點：7月4日的羅弗敦群島，太陽不會落下。即使是半夜，天色依然像下午四五點一樣明亮。您可以在漁屋的露台上，喝杯茶，看著金黃色的陽光灑在 Reinebringen 山峰上。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>渡輪班次備案：請務必根據您的航班時間，鎖定最適合的那一班渡輪，並**一定要預約**。若錯過預約，排候補（Standby）在旺季可能要等上一兩班船，會嚴重延誤行程。</li>
+                    <li>租車注意：挪威租車多為自排，但也有手排，取車時請確認。上渡輪的費用：現在許多租車公司配備 **AutoPASS 標籤**，渡輪費會自動記錄，還車時結算。但若需要人工付費，請準備信用卡。</li>
+                    <li>時差與體力：台灣與挪威夏季時差 6 小時。永晝天不黑，很容易讓人產生「還不累」的錯覺。建議第一晚強迫自己拉上窗簾休息，為明天的登山或徒步儲備體力。</li>
+                </ul>
+            `},
+            { day: 2, title: "羅弗敦之巔 & 世界盡頭", region: 1, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D2 (7/5) 行程總覽：攀登羅弗敦之巔 & 走到世界的盡頭</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**Reinebringen 登山**（或經典攝影）、**Anita's 海鮮漢堡**、**奧鎮肉桂捲/魚湯**、**歐洲 E10 公路終點**</p>
+                <p>D2 (7/5) 的行程重點在於「深度體驗羅弗敦的精華」。我們把步調放慢一點，集中在羅弗敦群島最美、最經典的南部雙子星：**雷納 (Reine)** 與 **奧鎮 (Å)**。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">08:30 - 09:30 | 晨喚與早餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：您的住宿處（Reine Rorbuer 或 Eliassen Rorbuer）</li>
+                    <li>活動：在漁屋內享用早餐。早晨的雷納港口通常風平浪靜，倒影最美，建議早起在屋外拍照。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:30 - 12:30 | 上午活動二選一（視體力與天氣決定）</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>**選項 A：挑戰經典 —— 攀登 Reinebringen 山**
+                        <ul>
+                            <li>適合對象：體力中上，平時有運動習慣者。</li>
+                            <li>亮點：這是羅弗敦最著名的景觀，俯瞰整個雷納村與蜿蜒的峽灣，就是那張著名的「挪威宣傳照」視角。</li>
+                            <li>導遊提醒：現在已有雪巴人修築的石階（約 1600 階），比以前安全很多，但依然陡峭。來回約需 2-3 小時。</li>
+                            <li>停車：登山口嚴禁停車！請將車停在 Reine Ytre Havn（外港停車場），步行約 1.5 公里前往登山口。</li>
+                        </ul>
+                    </li>
+                    <li>**選項 B：輕鬆攝影 —— 探索 Hamnøy 與 Sakrisøy**
+                        <ul>
+                            <li>適合對象：想輕鬆漫步，拍出大片者。</li>
+                            <li>路線：開車前往隔壁的 **Sakrisøy**（黃色漁屋島）和 **Hamnøy**（最經典的紅屋大橋攝影點）。這兩個點就在 E10 公路旁，隨停隨拍。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:30 - 14:00 | 午餐：必吃的網紅海鮮</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Anita's Sjømat** (位於 Sakrisøy)</li>
+                    <li>推薦美食：這裡是羅弗敦著名的美食地標。必點「**豪華魚排漢堡 (Fish Burger)**」，上面通常會佐以鮮蝦和煙燻鮭魚，非常新鮮美味。</li>
+                    <li>導遊提醒：店內也有賣許多魚乾、魚子醬等伴手禮，可以在此順便採購。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:00 - 15:00 | 前往奧鎮 (Å) - 歐洲 E10 公路的盡頭</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：Reine → Å (約 10 公里，車程 15-20 分鐘)</li>
+                    <li>沿途：這段路是 E10 公路的最後一段，穿越隧道與峽灣，有一種「開往世界盡頭」的蒼涼美感。</li>
+                    <li>停車：抵達 Å 後，車輛請停在村口的公共停車場（過了隧道後有標示），村內主要區域限制車輛進入。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">15:00 - 17:00 | 漫遊奧鎮 (Å i Lofoten)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：
+                        <ul>
+                            <li>**挪威漁村博物館 (Norsk Fiskeværsmuseum)**：整個 Å 鎮其實就是一座活生生的博物館。您可以參觀舊的魚肝油工廠、麵包房和船屋，了解過去漁民的生活。</li>
+                            <li>**尋找古老麵包店 (Bakeriet på Å)**：如果運氣好（且還沒賣完），這裡有著名的窯烤肉桂捲。建於 1844 年的石烤爐是鎮店之寶。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">17:00 - 18:00 | 辦理入住</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>住宿：**Å Rorbuer** (奧鎮漁屋) - 這裡的漁屋更具原始風味，部分客房甚至部分懸空在海面上。聽著海浪聲拍打木樁是最大特色。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:00 - 19:30 | 晚餐：傳說中的魚湯</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Brygga Restaurant** (通常位於 Å Rorbuer 旁或鎮中心)</li>
+                    <li>必吃：著名的「**羅弗敦魚湯 (Lofoten Fish Soup)**」。濃郁的奶油湯底配上新鮮鱈魚、鮭魚和蔬菜，配上麵包，是暖胃首選。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">20:00 - 21:30 | 散步至「世界盡頭」</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：晚餐後，沿著村莊最南端的小徑步行。</li>
+                    <li>目的地：走到 **E10 公路的終點路牌**處拍照，再繼續往海邊岩石走。這裡視野極其開闊，面對著廣闊的韋斯特峽灣（Vestfjorden），這裡也是觀賞午夜太陽（或夕陽）絕佳的無遮蔽點。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>關於奧鎮的發音：**"Å"** 在挪威語是字母表的最後一個字，發音類似「**歐**」（嘴巴嘟圓）。它也是世界上名字最短的地名之一，意為「小河」。</li>
+                    <li>Reinebringen 登山注意：雖然有階梯，但坡度真的很陡。如果天氣不好（下雨或雲層太厚蓋住山頂），建議放棄登山，改為平面攝影，因為上去也看不到景色且危險。請務必穿著抓地力好的登山鞋或運動鞋。</li>
+                    <li>停車費：羅弗敦熱門景點（如 Reine, Sakrisøy）的停車場多已改為收費制（**EasyPark APP** 很常用），請留意現場標示，以免收到高額罰單。</li>
+                    <li>海鷗與魚乾架：在 Å 鎮您會看到許多巨大的木架（Hjell），那是曬鱈魚乾用的。7月時魚乾可能已經收得差不多了，但架子本身拍照很有意境。小心頭頂的海鷗，牠們對遊客手中的食物非常有興趣！</li>
+                </ul>
+            `},
+            { day: 3, title: "穿越時空的羅弗敦公路之旅", region: 1, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D3 (7/6) 行程總覽：穿越時空的羅弗敦公路之旅</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**E10景觀公路**、**Ramberg白沙灘**、**Nusfjord古漁村**、**Henningsvær網紅足球場**、**Svinøya歷史漁屋**</p>
+                <p>這將是一趟視覺饗宴！我們將沿著「國王奧拉夫五世之路」(E10公路) 一路向北，串聯了羅弗敦群島最精華的中段。從最原始的漁村（Å），途經被聯合國教科文組織列為保護項目的古老漁村（Nusfjord），最後抵達羅弗敦最時尚、充滿文藝氣息的「羅弗敦威尼斯」（Henningsvær）。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 09:30 | 晨間出發</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：從 Å Rorbuer 退房出發。</li>
+                    <li>路況：沿著 E10 公路向北行駛。早晨的光線打在峽灣兩側的山壁上非常有層次。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:15 - 10:45 | 途經：北極圈的熱帶沙灘 —— Rambergstranda</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Ramberg Beach** (位於 E10 公路旁，Flakstad 島上)</li>
+                    <li>活動：這是羅弗敦最著名的白沙灘之一，呈新月形。即使不下去游泳，也強烈建議停車（路邊有休息區），拍幾張「雪山背景配白沙灘」的衝突美感照片。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">11:15 - 13:00 | 探索活歷史：Nusfjord 老漁村</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：在 Flakstad 之後，需從 E10 左轉進入 Fv807 道路（有指標），行駛約 6 公里抵達峽灣盡頭。</li>
+                    <li>活動：**Nusfjord (努斯峽灣漁村)**：這是挪威保存最完整的古老漁村之一，彷彿停留在 19 世紀。整個村莊是一座露天博物館。參觀舊雜貨店 (Landhandleriet)，這裡依然保留著百年前的櫃檯和商品陳列，非常有味道。</li>
+                    <li>導遊提醒：**進入村莊需要購買門票（約 100 NOK/人）**，這是為了維護古蹟的費用。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">13:00 - 14:00 | 午餐時間</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：建議就在 Nusfjord 內的 **Karoline Restaurant** 或 **Landhandleriet Café** 簡單用餐。</li>
+                    <li>推薦：華夫餅 (Waffles) 配挪威棕起司 (Brunost) 是這裡的經典點心，或者來一份簡單的鮮蝦三明治。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:00 - 15:15 | 前往「羅弗敦威尼斯」</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：返回 E10 公路繼續向北，經過海底隧道前往 Henningsvær。</li>
+                    <li>沿途：接近 Henningsvær 時，道路會變得非常狹窄且風景優美，這是一條沿著岩礁修建的海上公路，兩側都是大海。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">15:15 - 17:30 | 漫遊 Henningsvær (亨寧斯韋爾)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>亮點 1：**世界最美足球場 (Henningsvær Idrettslag Stadion)** - 這座位於島嶼最南端的足球場是空拍機愛好者的聖地。即使沒有空拍機，走到看台上感受被大海包圍的球場也非常震撼。</li>
+                    <li>亮點 2：文藝與咖啡 - 這裡聚集了許多藝術家、藝廊和文青小店。推薦參觀 **KaviarFactory**（由舊魚子醬工廠改建的當代美術館）。在 **Trevarefabrikken** 或 **Henningsvær Lysstøperi and Cafe** 喝杯咖啡，感受羅弗敦的年輕活力。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">17:30 - 18:15 | 前往首都：斯沃爾韋爾 (Svolvær)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>導覽：進入 Svolvær 前，您會看到地標「**Svolværgeita (山羊角峰)**」，兩塊聳立在山頂的巨岩。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:15 - 19:00 | 辦理入住</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>住宿：**Svinøya Rorbuer** (斯溫諾亞羅布爾) - 位於一個獨立的小島上，透過橋樑與市中心連接。這裡保留了 1828 年建立的第一家雜貨店（Børsen）。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">19:00 - 20:30 | 晚餐：品嚐「北極黃金」</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Børsen Spiseri** (就在您的住宿區內)</li>
+                    <li>必吃：這是羅弗敦最著名的餐廳之一。強烈推薦品嚐「**Lofoten Stockfish (羅弗敦鱈魚乾)**」料理。經過數月風乾的鱈魚，經過主廚重新泡發烹調，口感紮實且充滿大海的鮮味，是當地傳統美食的極致。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">20:30 - 21:30 | 漁村夜話</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：在 Svinøya 島上散步。這裡也是眺望 Svolvær 港口夜景（雖然天不會黑）和背後群山的絕佳位置。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>停車提醒 (Henningsvær)：遊客非常多，建議將車停在**進村前的公共大停車場**（過了最後一座橋的右手邊），然後步行進村（約 5-10 分鐘），既省去在狹窄街道會車的壓力，又能欣賞沿途海景。</li>
+                    <li>隧道注意：從 Nusfjord 到 Henningsvær 的路段會經過 **Nappstraum 隧道**（海底隧道）。隧道內坡度較陡，請注意車速控制。</li>
+                    <li>超市補給：經過 **Leknes** 時，那裡有大型購物中心和超市（Rema 1000, Bunnpris）。如果您需要在接下來的旅程中補充零食、水果或飲料，這裡是最好的補給站，價格比小村莊便宜很多。</li>
+                </ul>
+            `},
+            { day: 4, title: "縱貫挪威，從北極圈到石油之都", region: 1, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D4 (7/7) 行程總覽：縱貫挪威，從北極圈到石油之都</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**螺旋槳飛機體驗**、**斯塔萬格機場取車**、**老城區** (Gamle Stavanger) 漫步、**彩色街** (Fargegaten)</p>
+                <p>這是一個「大移動日」。我們將告別粗獷的羅弗敦群島，跨越半個挪威，飛往西南部的峽灣門戶——**斯塔萬格 (Stavanger)**。您將體驗挪威特有的「Widerøe 螺旋槳小飛機」，俯瞰千島之國的地貌變化。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">08:30 - 09:30 | 最後的羅弗敦時光 & 早餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：Svinøya Rorbuer</li>
+                    <li>活動：享用早餐後，收拾行李退房。離開前，別忘了最後看一眼 Svolværgeita (山羊角峰)。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:30 - 10:00 | 前往斯沃爾韋爾機場 (SVJ)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：自駕 (約 5-6 公里，10-15 分鐘)。</li>
+                    <li>重要事項：**加油！** 請務必在市區的 Circle K 或 Shell 把油箱加滿，機場非常小，附近沒有加油站。未滿油還車會被收取高額費用。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:00 - 11:30 | 還車 & 登機手續</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Svolvær Airport Helle (SVJ)**</li>
+                    <li>活動：將車停在「Rental Car Return」區域，將鑰匙交給櫃檯。辦理登機。這裡的飛機通常是 **Widerøe 航空的 Dash-8 螺旋槳飛機**，像空中巴士一樣隨興。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">11:30 - 16:30 | 空中移動：縱貫挪威 (預估航班時間)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>航程說明：通常沒有直飛，常見轉機路線為：**Svolvær (SVJ) → Bodø (BOO)**：飛行約 25 分鐘。這段超低空飛行景色絕美，請務必選靠窗位！接著轉機前往大城市（Oslo/Bergen），最後飛往 Stavanger (SVG)。</li>
+                    <li>午餐：建議在轉機機場 (Bodø 或 Oslo) 解決。挪威機場的 **Peppes Pizza** 或 **Upper Crust** (法棍三明治) 是方便的選擇。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:30 - 17:30 | 抵達斯塔萬格 & 機場取車</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Stavanger Airport, Sola (SVG)**</li>
+                    <li>活動：前往租車中心 (Car Rental Centre)。</li>
+                    <li>導遊提醒：斯塔萬格市區道路狹窄且單行道多，取車時建議熟悉一下導航設定。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">17:30 - 18:00 | 前往斯塔萬格市區</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：自駕 (約 15 公里，20 分鐘)。</li>
+                    <li>路線：沿 Rv509 接 E39 公路進入市區。斯塔萬格是挪威石油之都，公路系統非常現代化。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:00 - 18:30 | 飯店入住 & 停車</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>住宿：**Clarion Hotel Stavanger** - 位於市中心，距離步行街和碼頭很近。</li>
+                    <li>停車攻略：飯店通常沒有免費停車場。建議停在附近的公共停車樓 **P-Arketten** 或 **P-Jorenholmen** (在此過夜較便宜)，停好車後步行至飯店。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:30 - 20:00 | 晚餐：港口海鮮或異國料理</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：Vågen (斯塔萬格港口周邊)</li>
+                    <li>推薦：**Fisketorget Stavanger** (魚市場餐廳) - 如果想吃最新鮮的魚湯或海鮮拼盤，這裡是首選。**Villa 22 Trattoria** - 如果想吃好吃的義大利麵或披薩（就在飯店附近）。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">20:00 - 21:30 | 城市散步：白色與彩色的對比</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：
+                        <ul>
+                            <li>**老斯塔萬格 (Gamle Stavanger)**：由 170 多棟 18 世紀的**白色木屋**組成，鵝卵石街道配上家家戶戶門前的鮮花，優雅至極。</li>
+                            <li>**彩色街 (Fargegaten / Øvre Holmegate)**：這裡的房子被漆成五顏六色，充滿了酒吧、咖啡廳和塗鴉，是當地年輕人聚集的地方，拍照效果極佳。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>Widerøe 登機箱限制：從 Svolvær 飛出來的小飛機（Dash-8）機艙非常小。如果您的登機箱 (Carry-on) 稍大，地勤可能會要求您在機邊託運 (Valet Bag)，下機時直接在機邊領取。請把貴重物品和鋰電池放在隨身背包中。</li>
+                    <li>斯塔萬格的天氣：斯塔萬格位於西海岸，風大且多雨。即使是 7 月，晚上海風吹來也會冷，散步時請務必帶上防風外套。</li>
+                    <li>備戰明天：明天將是著名的「布道石 (Preikestolen)」健行。今晚請務必去附近的超市 (Kiwi 或 Rema 1000) 買好明天的行動糧（水、香蕉、巧克力、簡單的三明治）。**布道石山上沒有賣吃的！**</li>
+                </ul>
+            `},
+            { day: 5, title: "石油之都的知性與悠閒", region: 1, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D5 (7/8) 行程總覽：石油之都的知性與悠閒</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**挪威石油博物館**、**白色老城漫步**、**維京巨劍** (Sverd i fjell)、**Outlet 補給**</p>
+                <p>今天的重點在於「休養生息」，同時了解挪威致富的秘密（石油），並為明天的重頭戲——布道石 (Preikestolen) 健行——做好物資準備。晚上我們將向南移動至奧爾格爾 (Ålgård)，這裡更接近明天的出發點。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 10:00 | 享受飯店早餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：Clarion Hotel Stavanger</li>
+                    <li>活動：睡到自然醒。Clarion 的早餐通常很豐盛，請多補充蛋白質，為接下來的行程儲備體力。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:00 - 12:30 | 探索國家命脈：挪威石油博物館</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Norsk Oljemuseum** (步行前往，就在港口邊)</li>
+                    <li>特色：這座博物館的建築本身就像一座海上的石油鑽井平台。</li>
+                    <li>亮點：
+                        <ul>
+                            <li>了解挪威如何從貧窮漁國變成世界最富有的國家之一。</li>
+                            <li>體驗區：這裡有模擬鑽油平台的逃生滑梯（Escape Chute）和直升機駕駛艙，非常有趣，大人小孩都能玩。</li>
+                            <li>觀看 3D 電影《Petropolis》，震撼的視覺效果能讓你對北海油田有深刻認識。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:30 - 14:00 | 港口午餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Bølgen & Moi Stavanger** (就在博物館隔壁) 或 **Fisketorget** (魚市場)</li>
+                    <li>推薦：Bølgen & Moi 是挪威知名的連鎖餐廳，擁有無敵海景，提供精緻的北歐午餐（如開放式三明治或魚湯）。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:00 - 15:30 | 漫步白色老城 (Gamle Stavanger)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：步行回到港口西側的老城區。</li>
+                    <li>體驗：
+                        <ul>
+                            <li>穿梭在 173 棟建於 18 世紀的白色木屋之間，這裡是歐洲保存最完整的木造建築群。</li>
+                            <li>午後咖啡 (Fika Time)：隨意找一家小店（如 **No. 18 Kulturkafé**，若有營業）喝杯咖啡，或在路邊買一支 **Siddis Gelato** 義式冰淇淋，坐在鵝卵石街道上享受陽光。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">15:30 - 16:30 | 前往「石中劍」地標打卡</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：取車出發 (自駕約 15 分鐘)。</li>
+                    <li>地點：**Sverd i fjell** (位於 Madla區的 Hafrsfjord 峽灣邊)</li>
+                    <li>歷史背景：這是紀念哈拉爾金髮王 (Harald Fairhair) 於西元 872 年統一挪威的地方。三把巨大的青銅劍矗立在岩石上，分別代表和平、統一與自由。</li>
+                    <li>拍照 Tips：這裡風通常很大，且遊客較多，建議利用錯位拍攝手握巨劍的趣味照片。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:30 - 17:30 | 前往奧爾格爾 (Ålgård) & 裝備檢查</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：自駕沿 E39 公路向南 (約 20-30 分鐘車程)。</li>
+                    <li>中途停靠：**Norwegian Outlet Stavanger** (位於 Ålgård)</li>
+                    <li>導遊重要建議：如果你們的登山裝備（防風外套、登山鞋、羊毛襪）還沒準備齊全，這個 Outlet 是絕佳的補給站。這裡有 Helly Hansen, Bergans, Norrøna 等挪威頂級戶外品牌的折扣店，價格比市區便宜很多。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">17:30 - 18:30 | 超市補給 (關鍵任務！)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：Ålgård 的 **Extra** 或 **Coop Mega** 超市。</li>
+                    <li>任務：**購買明天的「布道石健行午餐」**。</li>
+                    <li>採購清單：
+                        <ul>
+                            <li>大量飲用水 (每人至少 1.5 - 2 公升)。</li>
+                            <li>能量棒、巧克力、堅果。</li>
+                            <li>香蕉、蘋果。</li>
+                            <li>製作三明治的麵包、火腿、起司（山上沒有賣吃的！一定要自備）。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:30 - 19:30 | 飯店入住與晚餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>住宿：**Gjesdal Gjestgiveri** (或其他 Ålgård 地區飯店) - 環境：這裡已經遠離城市喧囂，周圍是寧靜的鄉村景色。</li>
+                    <li>晚餐：可以在飯店餐廳用餐，或是在 Outlet 旁的餐廳簡單解決。今晚早點休息，明天是一場體力硬仗！</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>為什麼住 Ålgård？雖然它不在斯塔萬格市中心，但位於 E39 公路上，是往南或往東進入呂瑟峽灣 (Lysefjord) 的交通樞紐。這裡房價通常比斯塔萬格市區便宜，且停車方便（免費）。</li>
+                    <li>明日天氣預報確認：今晚睡前請務必查看 **Yr.no** (挪威最準氣象網) 對 "Preikestolen" 的天氣預報。如果是大雨或強風，可能需要調整明天的出發時間。</li>
+                    <li>停車費提醒：在斯塔萬格市區停車費用高昂，請善用 P-house (停車樓)，避免路邊停車超時被罰款。挪威的罰單非常貴（通常 600-900 NOK 起跳）。</li>
+                </ul>
+            `},
+            { day: 6, title: "從童話農莊到峽灣之底", region: 1, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D6 (7/9) 行程總覽：從童話農莊到峽灣之底</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**Byrkjedalstunet 燭光工廠**、**Gloppedalsura 巨石陣**、**Sirdal 高原羊群**、**Lysevegen 27道髮夾彎**</p>
+                <p>這是一場令人屏息的「秘境公路之旅」。我們將暫別城市的喧囂，深入挪威西南部的靈魂腹地。這條通往呂瑟峽灣盡頭（Lysebotn）的道路，被許多車友譽為「世界上最瘋狂也最美麗的公路之一」。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:30 - 10:00 | 悠閒晨喚 & 出發</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路況：沿著 **Fv450 公路** (舊稱 Rv45) 向東行駛。這是一條風景如畫的山谷公路。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:00 - 12:00 | 童話農莊：Byrkjedalstunet</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Byrkjedalstunet** (位於 Fv450 路邊，非常顯眼)</li>
+                    <li>活動：
+                        <ul>
+                            <li>**Lysestøperiet (蠟燭工廠)**：這裡有五顏六色的造型蠟燭，孩子們還可以體驗自己給蠟燭上色。</li>
+                            <li>**逛山洞商店**：它的禮品店設在一個人工開鑿的山洞裡，裡面有大量的挪威羊毛衣、維京紀念品和巨魔玩偶。</li>
+                            <li>**早午餐 (Brunch)**：他們的餐廳是傳統的木造建築，必點「**挪威傳統肉丸 (Kjøttkaker)**」或「**燉羊肉**」，還有一種叫 **Rømmegrøt** (酸奶油粥) 的傳統食物可以挑戰看看。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:00 - 12:45 | 巨人的戰場：Gloppedalsura</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>景點：**Gloppedalsura (落石陣)** - 這是北歐最大的落石堆積區。這裡也是二戰時期挪威軍隊利用地形伏擊德軍的著名戰場。</li>
+                    <li>活動：停車拍照，感受人類在自然面前的渺小。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:45 - 14:30 | 穿越 Sirdal 高原：尋找「路霸」</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：Fv450 轉 Fv975，再接 **Fv986 / Fv500** (往 Lysebotn 方向)。</li>
+                    <li>景觀變化：隨著海拔升高，樹木逐漸消失，景觀轉為苔蘚、地衣和裸露的岩石，彷彿行駛在月球表面。</li>
+                    <li>主要活動：**「讓路給羊」**。這裡是著名的放牧區，成群結隊的綿羊經常會躺在溫暖的柏油路上休息。請務必減速慢行，與這些「真正的路霸」合影是自駕的一大樂趣。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:30 - 15:30 | 鷹之巢：Øygardstøl 觀景台</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Øygardstøl** (又稱 Eagle's Nest，鷹巢)</li>
+                    <li>活動：
+                        <ul>
+                            <li>觀景：這是公路的最高點（海拔 640 米）。走到露台邊緣，垂直俯瞰下方的呂瑟峽灣 (Lysefjord) 和微小的呂瑟博頓村莊，視覺衝擊力極強。</li>
+                            <li>下午茶：在這裡的咖啡廳喝杯熱巧克力，這裡的風通常很大且冷。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">15:30 - 16:30 | 挑戰極限：Lysevegen 27道髮夾彎</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路況：從 Øygardstøl 開始下山，這就是傳說中的 **Lysevegen**。</li>
+                    <li>體驗：
+                        <ul>
+                            <li>連續 **27 個 180 度髮夾彎**，一路從海拔 640 米急降至海平面。</li>
+                            <li>終極隧道：在接近地面的最後一段，你會進入一個長達 1.1 公里的隧道，隧道**在山體內部轉了 340 度**（幾乎一圈），出來就是峽灣邊，非常神奇的工程設計。</li>
+                            <li>**駕駛提示：** **使用低速檔 (L檔或手排模式的1-2檔)** 利用引擎煞車下山，避免長時間踩煞車導致煞車過熱失靈！</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:30 - 17:30 | 抵達峽灣盡頭 & 入住</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>住宿：**Kjerag Lysebotn Camping** - 營地就位於峽灣的盡頭，四周被千米高的垂直峭壁包圍，瀑布從高處飛流直下。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">17:30 - 19:30 | 峽灣畔晚餐與散步</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>晚餐：Lysebotn 的選擇很少。選項 A：在營地的 **Olavs Pub** 吃漢堡或披薩。選項 B：到碼頭邊的 **Lysefjorden Turisthytte** 餐廳用餐。</li>
+                    <li>散步：走到渡輪碼頭的盡頭，回望整個峽谷，這裡是徹底放空、與世隔絕的好地方。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>煞車與車況：今天的下坡路段非常考驗車輛。如果覺得煞車有焦味或變軟，請立即在路邊避車彎停車冷卻。**切記：下坡用低速檔！**</li>
+                    <li>物資最後確認：Lysebotn 只有一個非常非常小的「雜貨櫃檯」，幾乎買不到生鮮食品。如果您打算今晚自己煮或明天爬奇蹟石需要午餐，**請務必在昨天的 Ålgård 或經過 Byrkjedal 時買齊所有食物**。</li>
+                    <li>羊群是老大：在高原公路上遇到羊群，請不要按喇叭驚嚇牠們，慢慢滑行通過即可。撞到羊不僅要賠償高額費用，也會讓車輛受損影響行程。</li>
+                </ul>
+            `},
+            { day: 7, title: "佈道石：仰望聖壇岩與前往奧達之路", region: 2, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D7 (7/10) 行程總覽：仰望聖壇岩與前往奧達之路</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**呂瑟峽灣渡輪** (Lysefjord Cruise)、**佈道石** (Preikestolen) 健行、**Rv13 景觀公路**、**Låtefossen 雙子瀑布**</p>
+                <p>這是行程中的一個「體力與視覺雙重震撼」之日。我們將從「海平面」的角度重新仰望這座峽灣，然後攀登挪威最著名的地標——**佈道石 (Preikestolen)**。這天的時間管理非常關鍵，因為呂瑟博頓的渡輪班次極少，且佈道石停車場在旺季容易客滿。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">06:30 - 07:10 | 晨間準備 (關鍵時刻！)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：Kjerag Lysebotn Camping</li>
+                    <li>活動：快速早餐，退房。請務必準時抵達碼頭，渡輪不等人。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">07:20 - 08:30 | 峽灣巡遊：Lysebotn → Forsand/Oanes</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：**Lysefjord Ferry (呂瑟峽灣渡輪)**</li>
+                    <li>班次提醒：強烈建議搭乘**最早班次** (通常是 07:20 或 07:45 左右的 Kolumbus 渡輪)。</li>
+                    <li>體驗：在船上仰望峽灣。您可以看到高聳入雲的 Kjerag (奇蹟石懸崖) 和今天要爬的 Preikestolen (佈道石) 的底部。</li>
+                    <li>預訂：**必須提前上網預訂車位 (Vehicle + Passengers)！** 現場通常沒有空位。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">08:30 - 09:00 | 前往佈道石登山口</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：自駕 (下船後開車約 20 分鐘)。</li>
+                    <li>路線：從 Forsand 碼頭沿 Rv13 行駛，跟著 "Preikestolen" 路牌上山。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 13:30 | 挑戰聖壇：佈道石健行 (Preikestolen Hike)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：Preikestolen Basecamp (登山口停車場)</li>
+                    <li>數據：來回約 8 公里，爬升約 350 米，總耗時約 **4 - 4.5 小時**。</li>
+                    <li>行程分解：
+                        <ul>
+                            <li>09:00 - 11:00 (上山)：難度適中，但人潮眾多。</li>
+                            <li>11:00 - 12:00 (山頂時光)：抵達海拔 604 米的方形懸崖。在此享用昨天準備好的午餐。**請注意安全，懸崖邊沒有護欄！**</li>
+                            <li>12:00 - 13:30 (下山)：原路返回。下坡傷膝蓋，請放慢腳步。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">13:30 - 14:15 | 休息與整裝</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：回到 Basecamp。這裡的遊客中心有洗手間和餐廳。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:15 - 18:30 | 絕美公路長征：前往奧達 (Odda)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：自駕 (約 140 公里，純車程約 3.5 小時，含渡輪與停留預計 4-5 小時)。</li>
+                    <li>路線 (**Rv13 景觀大道**)：
+                        <ul>
+                            <li>**Hjelmeland - Nesvik 渡輪**：搭乘短程渡輪 (約 15 分鐘，通常隨到隨上，不用預約)。</li>
+                            <li>**Røldal Stave Church** (洛達爾木板教堂)：接近奧達前會經過，如果時間允許，可以外觀拍照。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:30 - 19:00 | 震撼洗禮：Låtefossen (雙子瀑布)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：距離奧達市區南方約 15 公里處的 Rv13 公路旁。</li>
+                    <li>亮點：這是挪威最著名的公路瀑布。兩股巨大的水流在公路橋下匯合，水霧極大，開車經過時車窗都會被噴濕，非常震撼，必停！</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">19:00 - 19:30 | 抵達奧達 (Odda) & 入住</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>住宿：**Trolltunga Hotel** 或 **Hardanger Hotel**。</li>
+                    <li>晚餐：**Smeltehuset** (當地熱門的餐廳酒吧) 或 **Odda Grill** (簡單的漢堡快餐)。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>渡輪選擇的策略 (非常重要)：如果只能訂到中午 12:00 的船，那今天的行程會變得很趕，建議備足精神開夜車。</li>
+                    <li>佈道石停車費：停車費約 **250 NOK** (非常貴)，離開前在自動繳費機刷卡付費。</li>
+                    <li>明日預告 (Trolltunga 抉擇)：抵達奧達通常是為了隔天挑戰**惡魔之舌 (Trolltunga)**。那是一條來回 20-28 公里的**超高難度**路線（需 10-12 小時）。如果您有計畫，今晚必須在 22:00 前就寢。</li>
+                </ul>
+            `},
+            { day: 8, title: "奧達：冰河湖、瀑布與蘋果酒的協奏曲", region: 2, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D8 (7/11) 行程總覽：冰河湖、瀑布與蘋果酒的協奏曲</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**邦德胡斯湖** (Bondhusvatnet)、**Isvegen** (冰之路)、**雙子瀑布** (Låtefossen)、**哈當厄爾蘋果酒** (Hardanger Cider)</p>
+                <p>今天的主題是「極致的峽灣慢活」。我們將以奧達 (Odda) 為中心，前往周邊三個不同方位的精華景點。今天的車程不長，主要享受哈當厄爾峽灣 (Hardangerfjord) 的田園詩意。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 09:30 | 穿越隧道前往秘境</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：穿過長達 11 公里的 **Folgefonn 隧道**。</li>
+                    <li>目的地：桑達爾 (Sundal，請導航設定 **Bondhusvatnet Parking** )。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:30 - 12:00 | 皇室最愛：邦德胡斯湖 (Bondhusvatnet) 健行</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>難度：**極簡單 (綠色路線)**。這條路被稱為「**Isvegen (冰之路)**」，全程平緩碎石路。</li>
+                    <li>行程：從停車場步行約 45-60 分鐘即可抵達湖邊。</li>
+                    <li>景色：眼前是**蒂芬妮藍 (Tiffany Blue)** 的湖水，遠方是壯麗的 Bondhusbreen 冰河。這是挪威王后 Sonja 最愛的私人健行點之一。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:00 - 13:30 | 農莊午餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>推薦地點：**Olaløo Gardsrestaurant** (位於 Sundal 停車場附近)。提供簡單的挪威農家菜、湯品和鬆餅。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">13:30 - 14:15 | 重返雙子瀑布 (Låtefossen)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：回到奧達後，沿 Rv13 公路往南開約 15 分鐘。</li>
+                    <li>體驗：今天下午是觀賞彩虹的最佳時機。兩股巨大的水流在古老的石拱橋下匯合，水量驚人。必做：找個安全的地方停車，走到橋上感受「天然保濕噴霧」。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:15 - 15:00 | 前往「挪威果園」：Sørfjorden 西岸</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：沿著峽灣西岸的 **Rv550 公路** 向北行駛。</li>
+                    <li>景觀：這段路被稱為「水果之路」。7 月份剛好是蘋果和櫻桃開始結果的季節，沿途滿山遍野都是果樹。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">15:00 - 17:00 | 微醺午後：品嚐哈當厄爾蘋果酒 (Sider)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點推薦 (二選一)：**Aga Sideri** 或 **Alde Sideri** (當地知名的精品酒莊)。</li>
+                    <li>體驗：挪威的 **Hardanger Sider** 就像法國香檳一樣，是有地理標誌保護的頂級飲品。</li>
+                    <li>**導遊嚴肅提醒：** **挪威酒駕標準極嚴 (0.02%)！** 駕駛員在現場**絕對不能喝酒**。解決方案：駕駛員可以品嚐他們同樣世界級好喝的 **Eplemost** (未發酵蘋果汁)。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:00 - 19:30 | 奧達晚餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>餐廳推薦：**Smeltehuset**。這家餐廳就在奧達港口，氛圍輕鬆，晚上可能會有名為「After Hike」的熱鬧聚會。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>Bondhusvatnet 停車：這個景點非常熱門，停車場 (Sundal) 在旺季上午 10:30 後很容易客滿。停車費約 **100 NOK**，通常透過 **EasyPark APP** 支付。</li>
+                    <li>關於「桑達爾」的地名：挪威有兩個地名很像。導航時請務必確認是 **"Bondhusvatnet Parking"**。</li>
+                    <li>蘋果酒購買規定：在酒莊 (Sideri) 可以直接購買濃度 4.7% 以下的蘋果酒。如果想買濃度更高的 (類似葡萄酒)，必須去國營酒局 (Vinmonopolet)。</li>
+                </ul>
+            `},
+            { day: 9, title: "卑爾根：果園之路到漢薩古城", region: 2, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D9 (7/12) 行程總覽：從果園之路到漢薩古城</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**史坦達爾瀑布** (Steinsdalsfossen)、**葛利格故居** (Troldhaugen)、 **弗洛伊恩山纜車** (Fløibanen) 、**世界遺產布呂根** (Bryggen)、**奢華入住 Opus XVI**</p>
+                <p>我們終於要進入「峽灣之王」的首都——**卑爾根 (Bergen)**。今天的車程不長，是一趟從壯麗大自然慢慢過渡到歷史古城的旅程。沿著哈當厄爾峽灣的北岸行駛（Fv7）被稱為挪威最浪漫的景觀公路之一。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:00 - 11:30 | 穿越蘋果園：奧達 → 永達爾 (Jondal)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：沿著峽灣西岸的 **Fv550** 公路北上。</li>
+                    <li>沿途：欣賞哈當厄爾峽灣的果園風光，左手邊可見福爾格冰河 (Folgefonna)。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">11:30 - 12:15 | 峽灣渡輪：Jondal → Tørvikbygd</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：**Ferry (Fjord1)** - 在甲板上享受峽灣微風，這是進入卑爾根前最後一段主要的峽灣渡輪。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:15 - 13:15 | 諾希姆松 (Norheimsund) 午餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：下渡輪後開車約 15 分鐘抵達。</li>
+                    <li>推薦：在港口邊的 **Mo & Kaffi** 或 **Thon Hotel Sandven** 享用輕食。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">13:15 - 14:15 | 濕身穿越：斯坦達爾瀑布 (Steinsdalsfossen)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：Norheimsund 往西約 2 分鐘車程。</li>
+                    <li>活動：走上步道，**穿過瀑布的水幕後方**。這是一個不會濕身（但水氣充沛）的獨特視角，必停打卡點。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">15:30 - 17:00 | 音樂朝聖：葛利格故居 (Troldhaugen)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Edvard Grieg Museum Troldhaugen**</li>
+                    <li>導覽：參觀作曲家葛利格的別墅、湖邊作曲小屋，以及與妻子長眠的岩壁墓地，感受孕育《皮爾金》組曲的靈感之地。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">17:00 - 17:30 | 前往市中心 & 飯店入住</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>住宿：**Opus XVI** (由葛利格後代經營的奢華飯店)。</li>
+                    <li>停車：強烈建議使用飯店的**代客泊車 (Valet Parking)**，省去在市區找車位的麻煩。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">17:30 - 18:30 | 漢薩餘暉：布呂根 (Bryggen) 與魚市場</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>布呂根：漫步在世界遺產彩色木屋群前，走進歪斜的木板巷弄，感受中世紀漢薩同盟的貿易氣息。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:30 - 20:00 | 登頂卑爾根：弗洛伊恩山纜車 (Fløibanen)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：纜車站距離魚市場步行僅 150 公尺。</li>
+                    <li>體驗：搭乘纜車直達山頂，俯瞰「七山之城」卑爾根的全貌。此時的光線（接近黃金時刻）拍照最美。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">20:00 - 21:30 | 晚餐：下山後的饗宴</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>選擇：**Bryggeloftet & Stuene** (布呂根老字號餐廳) 品嚐著名的卑爾根魚湯或馴鹿肉排。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>纜車票券：旺季排隊人潮可能較多，建議提前在 **Fløibanen App** 或官網購票，現場直接掃 QR Code 進站。</li>
+                    <li>山上氣溫：雖然是夏天，山頂風大且氣溫會比市區低幾度，上山前請務必帶一件防風外套。</li>
+                    <li>晚餐預訂：週六晚上的卑爾根熱門餐廳非常容易客滿，**強烈建議提前訂位**。</li>
+                </ul>
+            `},
+            { day: 10, title: "布呂根：雨都的歷史與鮮味", region: 2, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D10 (7/13) 行程總覽：雨都的歷史與鮮味</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**深度遊布呂根** (Bryggen)、**弗洛伊恩山** (Fløyen) 森林浴、**魚市場海鮮大餐**、**卑爾根肉桂捲** (Skillingsbolle)</p>
+                <p>今天是我們在卑爾根的「深度城市日」。由於您住在 Opus XVI，今天的行程完全可以**徒步**完成，享受「慢旅」的樂趣。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 10:30 | 葛利格的早餐時光</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Opus XVI 飯店** - 這家飯店的早餐水準極高，常有現場鋼琴演奏。請慢慢享用。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:30 - 12:30 | 穿越中世紀：深度探索布呂根 (Bryggen)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>導覽路線：
+                        <ul>
+                            <li>正面拍照：先在對岸 (Vågen 港口邊) 拍那排經典的彩色木屋倒影。</li>
+                            <li>**鑽進巷弄：** 這是重點！請走進木屋之間的窄巷 (如 Jacobsfjorden 或 Bellgården)。踩在嘎吱作響的木板路上，感受 14 世紀漢薩商人的生活區。</li>
+                            <li>尋找隱藏景點：走到木屋群的最深處，你會看到 **Schøtstuene (漢薩集會廳)**。</li>
+                            <li>**聖瑪莉教堂 (Mariakirken)**：卑爾根最古老的建築（12 世紀），當年漢薩商人專用的教堂。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:30 - 14:00 | 舌尖上的北大西洋：魚市場 (Fisketorget)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>午餐攻略：
+                        <ul>
+                            <li>室內魚市場 (Mathallen)：推薦點一份「**卑爾根魚湯 (Bergen Fish Soup)**」或「**白酒淡菜鍋**」。</li>
+                            <li>戶外攤位：點現煮的「**帝王蟹腳**」或「**鯨魚肉漢堡**」 (如果您敢嘗試的話)。</li>
+                            <li>甜點：買一盒新鮮的**挪威草莓**或覆盆子當飯後水果，7月的莓果最甜。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:00 - 16:30 | 雲端森林浴：弗洛伊恩山 (Fløyen)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：**Fløibanen 纜車** (纜車站就在魚市場後方 150 公尺處)。</li>
+                    <li>秘密散步 (導遊大推)：離開觀景台人潮，往後山的森林走約 10-15 分鐘，前往 **Skomakerdiket (鞋匠堤湖)**。這是一個寧靜的高山小湖，有免費的獨木舟可以借用。</li>
+                    <li>尋找巨魔：在森林步道入口處，別忘了和巨大的 **Troll (巨魔)** 雕像合影。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:30 - 18:00 | 城市漫遊與購物</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>下午茶：一定要去麵包店 (如 Baker Brun) 買一個 **Skillingsbolle (卑爾根肉桂捲)**，這是當地限定的巨大版肉桂捲。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:00 - 20:00 | 晚餐：傳統挪威味</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>餐廳推薦：**Pingvinen (企鵝餐廳)** - 這是當地人最愛的家常菜館。</li>
+                    <li>必點：**Plukkfisk** (奶油燉魚肉馬鈴薯泥) 或 **Kjøttkaker** (挪威肉丸)。這才是最道地的挪威老奶奶味道。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>雨備方案：卑爾根一年有 200 多天都在下雨。如果今天遇到大雨，可以改為參觀 **KODE Art Museums** (這就在市中心，收藏了孟克 Munch 的名畫)，或去 **Magic Ice Bar** 體驗冰屋酒吧。</li>
+                    <li>伴手禮採購：布呂根木屋區裡有許多特色小店，推薦購買：**雨衣/雨帽**（卑爾根品牌的雨具設計感十足）、**聖誕飾品**（這裡有一家全年的聖誕商店）。</li>
+                    <li>魚市場的價格：魚市場主要針對觀光客，價格偏高。如果想買平價一點的管狀魚子醬或魚罐頭帶回國，建議去市區的超市 (如 Rema 1000 或 Kiwi) 購買會划算很多。</li>
+                </ul>
+            `},
+            { day: 11, title: "弗洛姆：與火車競速的峽灣單車日", region: 2, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D11 (7/14) 行程總覽：與火車競速的峽灣單車日</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**E16 瀑布公路**、**弗洛姆高山火車** (Flåmsbana)、**Rallarvegen** (拉爾之路) **單車下山**、**維京精釀啤酒**</p>
+                <p>今天的行程亮點在於「移動的樂趣」。從卑爾根自駕到弗洛姆的 E16 公路本身就是一條風景線，而抵達弗洛姆後，結合世界最美火車線與單車下山的體驗，將是整趟旅程中最動感的一刻。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 09:30 | 告別卑爾根，向峽灣出發</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：沿 **E16 公路** 往 Voss/Oslo 方向行駛。離開卑爾根後隧道較多，請注意車速限制。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:30 - 11:00 | 公路旁的巨大驚喜：特溫德瀑布 (Tvindefossen)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：經過 Voss 小鎮後約 15 分鐘，位於 E16 公路左側。</li>
+                    <li>活動：這座瀑布就在路邊，完全不用爬山。它的特點是水流像階梯一樣層層落下。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:00 - 12:30 | 抵達弗洛姆 (Flåm) & 停車</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>停車：弗洛姆遊客中心旁有大型停車場。如果今晚入住 **Flåmsbrygga Hotel** 或 **Fretheim Hotel**，建議先去飯店登記入住或寄放行李，並將車停在飯店專用停車場。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:30 - 13:30 | 峽灣午餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>推薦：**Flåm Bakeri** (就在遊客中心旁)。這裡有非常美味的現做三明治和肉桂捲。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">13:30 - 14:30 | 世界最美火車線：Flåmsbana (上山)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：**弗洛姆高山火車 (Flåm - Myrdal)**</li>
+                    <li>**預訂提醒：** **這是絕對必須提前幾個月預訂的項目！** 7月的現場票幾乎是一票難求。</li>
+                    <li>體驗：
+                        <ul>
+                            <li>從海拔 2 米攀升到 866 米。</li>
+                            <li>**Kjosfossen 瀑布：** 火車會在這裡暫停 5 分鐘，讓遊客下車拍照。幸運的話會看到紅衣森林精靈 (Huldra) 在瀑布旁跳舞。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:30 - 16:30 | 經典單車路線：Rallarvegen (Myrdal - Flåm 下山)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：**租單車騎行下山** (約 20 公里，全程下坡) 。</li>
+                    <li>租車方式：購買 **"Train & Bike" 套票**，或在 Myrdal 車站預約單車。</li>
+                    <li>路線精華：
+                        <ul>
+                            <li>**Myrdalsberget (髮夾彎段)：** 剛開始的一小段是碎石路髮夾彎，**導遊強烈建議：這一段請牽車步行慢慢走下去**，安全第一。</li>
+                            <li>Berekvam 峽谷：沿著清澈的 Flåm 河谷一路滑行。</li>
+                        </ul>
+                    </li>
+                    <li>還車：騎回 Flåm 車站旁的租車點還車。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:30 - 20:30 | 維京盛宴：Ægir BrewPub</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Ægir Bryggeri (艾吉爾釀酒廠)**，就在 Flåmsbrygga Hotel 一樓。</li>
+                    <li>特色：外觀像一座維京龍頭木板教堂。</li>
+                    <li>必吃：**Ægir Viking Plank (維京五道菜拼盤)**。包含煙燻馴鹿肉、貝類、魚湯、豬肋排等，每道菜都搭配一杯該廠自釀的小杯精釀啤酒。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>單車難度評估：Myrdal 到 Flåm 的單車路線全程約 20 公里，**98% 都是下坡**，體力消耗很小。但因為是**碎石路 (Gravel Road)**，請務必雙手握好煞車，控制速度。如果您帶著老人或太小的孩子，不建議騎這段。</li>
+                    <li>行李安排：今天從卑爾根開車過來，**行李請全部鎖在車上或先寄放飯店**。搭火車和騎車時，身上只需背一個輕便背包即可。</li>
+                    <li>穿著建議：Myrdal 山上 (海拔 866m) 氣溫較低，且騎車下坡會有風。請務必穿著**防風外套**。</li>
+                </ul>
+            `},
+            { day: 12, title: "峽灣之眼：雪之路與藍冰河", region: 2, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D12 (7/15) 行程總覽：雪之路、藍冰河與天空之宿</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**史泰格斯坦觀景台** (Stegastein)、**艾於蘭山路** (Snow Road)、**布利克斯達爾冰川** (Briksdalsbreen)、**Loen Skylift 纜車**</p>
+                <p>今天的目的地是挪威最北部的冰河峽灣區。路線不走傳統的長隧道，而是行駛在景觀絕美的「雪之路」上。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">08:30 - 09:00 | 晨間出發</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>準備：請先加滿油，今天的山路較多。</li>
+                    <li>路線：沿 E16 往 Aurland 方向開，但**絕對不要進「世界上最長的Lærdal隧道」**。請依照指示轉往 **Fv243 (Aurlandsfjellet) 山路**。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 09:45 | 峽灣之眼：史泰格斯坦觀景台 (Stegastein)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>亮點：這是一個從公路旁向外延伸 30 公尺的木造觀景台，**懸空在艾於蘭峽灣上方 650 公尺處**。</li>
+                    <li>體驗：俯瞰深藍色的峽灣和像玩具一樣小的遊輪，是此行最震撼的視角之一。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:45 - 11:30 | 行駛在白色荒原：雪之路 (Snøvegen)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路況：繼續沿 **Fv243** 往 Lærdal 行駛。</li>
+                    <li>景色：即使是 7 月，路邊仍可能看到高聳的殘雪牆。在最高點的 **Vedahaugane** 停車，這裡有一個像藝術品般的休息點。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">11:30 - 12:30 | 萊達爾 (Lærdal) 午餐與古鎮</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：這裡有保存完好的 18-19 世紀木造建築群 (Gamle Lærdalsøyri)。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:30 - 13:15 | 渡輪跨越：Fodnes → Mannheller</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：這是跨越松恩峽灣 (Sognefjord) 的必要交通。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">15:45 - 18:00 | 觸摸萬年藍冰：布利克斯達爾冰川 (Briksdalsbreen)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：徒步前往冰川前緣的冰湖。</li>
+                    <li>方式二選一：**徒步 (Hike)** (來回約 1.5 - 2 小時)；**精靈車 (Troll Cars)** (付費搭乘敞篷接駁車)。</li>
+                    <li>景色：那幽藍色的冰舌掛在懸崖上，與下方乳白色的冰蝕湖相映，依然充滿靈氣。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:45 - 19:00 | 直衝雲霄：Loen Skylift 纜車</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>體驗：這是**世界上最陡峭的纜車之一**。僅需 5 分鐘，就能從峽灣邊拔地而起，直達海拔 1011 公尺的 Hoven 山頂。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">19:00 - 20:30 | 雲端晚餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Hoven Restaurant** (山頂景觀餐廳)。</li>
+                    <li>晚餐：整面落地窗，擁有 210 度的無敵視野。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">20:30 - 22:00 | 懸崖邊的家</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>住宿：**Loen Skylift Cabins** (位於 Hoven 山頂) - 坐在屋外看著太陽慢慢落向海平線，是整趟旅程中最難忘的住宿體驗之一。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>雪之路 vs. 隧道：導航通常會預設走 "Lærdal Tunnel"。但您今天要走的是景觀公路，請務必手動設定經由 **Stegastein** 或 **Aurlandsfjellet**。</li>
+                    <li>行李策略：今晚住在山頂，需要搭纜車上去。建議整理一個**「過夜輕便包」**帶上山，大件行李鎖在山下車子的後車廂。</li>
+                    <li>冰川健行穿著：Briksdal 步道旁有著名的 Kleivafossen 瀑布，經過時**一定會濕**。建議穿防水外套或雨衣，並保護好相機鏡頭。</li>
+                </ul>
+            `},
+            { day: 13, title: "蓋朗厄爾：草莓之路與老鷹之翼", region: 2, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D13 (7/16) 行程總覽：草莓之路與老鷹之翼</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**Lovatnet** (綠色湖泊)、**Valldal** (草莓谷)、**Ørnesvingen** (老鷹之路觀景台)、**Hotel Union** 古董車與瀑布步道</p>
+                <p>這是一趟「進入峽灣王者領地」的旅程。為了達成您指定「沿途經過老鷹之路 (Eagle Road)」的需求，我們將繞行北邊的「草莓之路」，以最經典的「老鷹視角」俯衝進入蓋朗厄爾峽灣，視覺震撼度滿分！</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 10:00 | 晨間秘境：Lovatnet (洛瓦特內湖)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：從 Loen 住宿處開車約 10-15 分鐘進入 Lodalen 山谷。</li>
+                    <li>亮點：務必去看看這個顏色**綠得不真實的冰河湖**。</li>
+                    <li>拍照點：導航至 **Breng Seter**。這裡是挪威最經典的明信片場景之一。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:30 - 13:30 | 甜蜜的中停：Valldal (草莓谷)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：下渡輪後，開車穿越 Valldal 山谷。</li>
+                    <li>必吃：這裡是挪威的「草莓首都」。7 月中旬正是產季！推薦：找路邊的 **Jordbærstova (草莓小屋)** 吃著名的草莓蛋糕 (Valldalskake)，或買一籃現摘草莓。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:15 - 15:00 | 俯衝峽灣：老鷹之路 (Ørnevegen)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路況：下船後，沿著 **Rv63 公路** 開始爬升，然後急劇下降。這是蓋朗厄爾最險峻的公路，有 11 個髮夾彎。</li>
+                    <li>必停：**Ørnesvingen (老鷹之翼觀景台)**。這裡是拍攝蓋朗厄爾峽灣呈現「**S型**」的最佳角度，也能清楚看到對面的「**七姊妹瀑布**」。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">15:00 - 16:00 | 抵達蓋朗厄爾 (Geiranger) & 入住</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>住宿：**Hotel Union Geiranger** - 飯店位於半山腰，視野極佳。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:00 - 17:30 | 飯店周邊探險：瀑布與古董車</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動 1：**瀑布步道 (Fossevandring)** - 這條鋼構步道沿著轟隆作響的 **Storfossen 瀑布** 一路往下延伸到峽灣中心。</li>
+                    <li>活動 2：**古董車博物館 (Vintage Car Museum)** - 就在 Hotel Union 飯店底層。展示了 1920-30 年代當年用來載遊客爬山路的敞篷古董車。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:00 - 20:00 | 晚餐：峽灣自助百匯</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：Hotel Union 餐廳。他們的自助晚餐非常豐盛，海鮮區通常有大量甜蝦和燻鮭魚。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線說明 (重要)：目前的安排是最順路的「老鷹之路」走法。如果走南邊的 Stryn-Grotli 山路，會錯過老鷹之路。</li>
+                    <li>Lovatnet 提醒：早上在 Lovatnet 拍照時，請導航到 **"Breng Seter"**，不要開到最裡面的 Kjenndal 冰河，那樣會太遠。</li>
+                    <li>Spa 時間：Hotel Union 的 Spa 區（需額外付費或視房型而定）景色無敵。如果行程走累了，晚餐前去泡個溫水池看峽灣是人生一大享受。</li>
+                </ul>
+            `},
+            { day: 14, title: "峽灣二重奏：仰望與俯瞰", region: 2, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D14 (7/17) 行程總覽：仰望與俯瞰的峽灣二重奏</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**蓋朗厄爾峽灣遊船** (Fjord Sightseeing)、**Brasserie Posten** 網紅午餐、**達爾斯尼拔** (Dalsnibba) **Skywalk**、**瀑布步道** (Fossevandring)</p>
+                <p>這是我們在蓋朗厄爾峽灣 (Geirangerfjord) 的「精華體驗日」。上午我們將從「水面」視角仰望峽灣的壯麗，下午則搭乘巴士直衝海拔 1500 公尺的「歐洲最高公路觀景台」，體驗從海平面到雲端的垂直落差。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 10:00 | 瀑布步道晨走 (Fossevandring)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：沿著轟隆作響的 **Storfossen 瀑布** 修築的鋼構棧道，共有 327 階。</li>
+                    <li>體驗：早晨空氣清新，沿著瀑布一路**步行下山**到蓋朗厄爾港口 (約 20-30 分鐘)。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:30 - 12:00 | 經典峽灣巡遊 (Fjord Sightseeing)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：**Geiranger Fjordservice 觀光船** (需提前預訂)。推薦搭乘 **10:30** 或 **11:00** 的班次（航程 90 分鐘）。</li>
+                    <li>體驗：船會更貼近瀑布。必看景點：著名的「**七姊妹瀑布 (Seven Sisters)**」、「**追求者瀑布 (The Suitor)**」和「**新娘面紗 (Bridal Veil)**」。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:00 - 13:30 | 港口午餐時光</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>推薦：**Brasserie Posten**。由舊郵局改建的餐廳，就在峽灣邊。點一份當地的「**燻鮭魚三明治**」或「**魚湯**」。</li>
+                    <li>備案：旁邊的 **Geiranger Bakeri** 也有很棒的麵包和咖啡。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">13:30 - 16:30 | 雲端巴士：前往 Dalsnibba Skywalk</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：**Geiranger Panorama Bus (全景巴士)**。</li>
+                    <li>行程亮點 (約 3 小時)：
+                        <ul>
+                            <li>**Flydalsjuvet** (弗里達斯懸崖)：經典的明信片拍照點，這裡有著名的「峽灣石椅」。</li>
+                            <li>**Dalsnibba Skywalk (達爾斯尼拔)**：這是重頭戲！巴士會沿著蜿蜒的 Nibbevegen 公路開到海拔 **1500 公尺**的山頂。</li>
+                        </ul>
+                    </li>
+                    <li>體驗：站在懸空的網狀觀景台上，腳下是萬丈深淵。這裡被稱為「**歐洲峽灣景觀的最高點**」。</li>
+                    <li>不開車的好處：這段山路髮夾彎極多且路窄，搭乘巴士可以讓駕駛徹底放鬆，專心欣賞窗外風景。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:30 - 17:30 | 漫步逛街 & 採購紀念品</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：逛逛港口邊的紀念品店。這裡有挪威著名的 **Audhild Viken** 紀念品店，挪威毛衣 (Dale of Norway) 和巨魔玩偶樣式最齊全。</li>
+                    <li>點心：買一支 **Geiranger Sjokolade** (當地手工巧克力)，他們有特殊的「藍起司巧克力」或「莓果巧克力」。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:00 - 20:00 | 飯店晚餐 & Spa 享受</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>晚間放鬆：強烈建議去 **Union Bad & Spa**。他們的戶外溫水池正對著峽灣，在微涼的空氣中泡在熱水裡，看著夕陽餘暉灑在七姊妹瀑布的方向，是這一整天最完美的句點。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>巴士座位攻略：搭乘 Dalsnibba 巴士時，上山建議坐在**右側**，下山坐**左側**，這樣大部分時間都能直接看到峽灣和深谷的景色。</li>
+                    <li>山上溫差：Dalsnibba 海拔 1500 公尺，即使港口有 25 度，山頂可能只有 10-15 度且風大。**請務必帶一件防風外套**上巴士。</li>
+                    <li>關於自駕 vs. 巴士：Dalsnibba 的上山路 (Nibbevegen) 是收費道路 (約 300 NOK)，且駕駛壓力大。搭巴士是更明智的選擇。</li>
+                </ul>
+            `},
+            { day: 15, title: "特隆赫姆：穿越山海的長征", region: 2, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D15 (7/18) 行程總覽：穿越山海的長征</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**精靈之路** (Trollstigen)、**玫瑰之城莫爾德** (Molde)、**大西洋海濱公路** (Atlanterhavsveien)、**特隆赫姆** (Trondheim)</p>
+                <p>這是一個**10-11 小時**的「長征日」。如果走「大西洋海濱公路」，今天的實際駕駛時間將高達 7.5 - 8.5 小時。請務必做好心理準備，並建議**早上 08:00 前就出發**。這條路線是挪威最經典的「黃金之路」與「大西洋之路」的串聯，景色絕對值回票價。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">08:00 - 08:30 | 晨間出發：老鷹之路的回眸</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：再次開上**老鷹之路 (Ørnevegen)**。這是最後一次俯瞰蓋朗厄爾峽灣的機會，值得在經過觀景台時多看一眼。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:15 - 10:30 | 險峻髮夾彎：精靈之路 (Trollstigen)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>景點：**Trollstigen Visitor Centre**。</li>
+                    <li>體驗：這裡有 **11 個令人頭皮發麻的髮夾彎**。請在遊客中心的觀景台停留，看著車子像玩具一樣在蜿蜒的山路上爬行。</li>
+                    <li>**重要路況提醒：** 2024 年此路段曾因落石長時間關閉。若 2025 年出發時遇封閉，需改道 Sjøholt 前往莫爾德 (會錯過精靈之路，但省時)。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:00 - 13:00 | 玫瑰之城午餐：莫爾德 (Molde)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>特色：莫爾德以爵士樂和玫瑰聞名。如果天氣好，可以去 **Varden 觀景台** (開車 10 分鐘上山)，這裡可以看到著名的「**莫爾德全景**」——對岸 222 座白雪皚皚的山峰一字排開，極為壯觀。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">13:00 - 14:30 | 前往大西洋之路：Bud 漁村</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：從莫爾德出發，**不要走捷徑！** 請導航設定經由 **Bud** (漁村) 前往大西洋之路。這段 Fv664/Fv663 公路才是沿著海岸線走的精華。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:30 - 16:00 | 公路之王：大西洋海濱公路 (Atlanterhavsveien)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>亮點：**斯托爾桑德橋 (Storseisundet Bridge)**。那座著名的「**斷尾橋**」，看起來像通往天際，是汽車廣告的最愛。</li>
+                    <li>活動：在 **Eldhusøya** 觀景步道停車散步 (懸空的環形步道)。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:00 - 20:00 | 最後衝刺：前往特隆赫姆</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：穿過大西洋隧道 (Atlantic Ocean Tunnel) 抵達 Averøy，經 Rv70 接 **E39** 公路。</li>
+                    <li>渡輪：途中需搭乘 **Kanestraum - Halsa 渡輪** (約 20 分鐘，班次頻繁)。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">20:00 - 20:30 | 抵達舊都：特隆赫姆 (Trondheim)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>住宿：**Clarion Hotel Trondheim** - 位於 Brattøra 港區。</li>
+                    <li>晚餐：飯店頂樓的 **Kitchen & Table** 餐廳，擁有特隆赫姆峽灣的無敵夜景，是慰勞這一天長途駕駛的最佳獎勵。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>時間管理是關鍵：今天的變數在於「精靈之路 (Trollstigen)」的開放狀況和「大西洋之路」的拍照時間。如果覺得太累，可以放棄「Bud 漁村」的繞路，從莫爾德直接開 Fv64 穿過隧道去大西洋之路，可省下約 30-40 分鐘。</li>
+                    <li>大西洋隧道 (Atlanterhavstunnelen)：離開大西洋之路往克里斯蒂安松方向會經過這條海底隧道，**非常深且陡**，請注意車速控制。</li>
+                </ul>
+            `},
+            { day: 16, title: "奧運之城：穿越挪威的脊梁", region: 3, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D16 (7/19) 行程總覽：穿越挪威的脊樑</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**Dovrefjell 苔原**、**Ringebu 木板教堂**、**里爾哈默** (Lillehammer) **冬奧跳台**、**奧斯陸最後巡禮**</p>
+                <p>這是我們整趟旅程的「收官長征」，從古都特隆赫姆 (Trondheim) 回到現代首都奧斯陸 (Oslo)，橫跨約 500 公里。**強烈建議走 E6 景觀路線**，您可以體驗從高山苔原一路開到寬闊河谷的地貌變化，還能順道拜訪奧運城市。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃 (以 E6 路線為主)</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">08:30 - 09:30 | 特隆赫姆的最後一瞥</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**尼達洛斯主教座堂** (Nidarosdomen) 或 **老城橋** (Gamle Bybro)。</li>
+                    <li>活動：利用早餐後的一小時去這座北歐最重要的教堂外圍拍張照，或是去老橋上看紅色倉庫的倒影。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:30 - 12:00 | 攀越龍脊：特隆赫姆 → 多夫勒高原 (Dovrefjell)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：沿 **E6** 公路往南。</li>
+                    <li>景觀：車子會一路爬升，進入 **Dovrefjell 國家公園**。這是麝牛 (Muskox) 的棲息地，景觀會從針葉林轉變為荒涼壯闊的高山苔原。</li>
+                    <li>休息點：**Hjerkinn**。這裡可以遠眺著名的 Snøhetta 雪山。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:00 - 13:00 | 山妖午餐：Dombås</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Dombås** 休息站或 **Dovregubbens Hall** (多夫勒山妖大廳)。</li>
+                    <li>推薦：Dovregubbens Hall 是一間充滿挪威傳說風格的歷史旅館/餐廳，非常適合體驗傳統氛圍，喝碗熱湯或吃個肉丸三明治。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:15 - 15:00 | 歷史的見證：Ringebu Stave Church</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Ringebu 木板教堂** (就在 E6 路邊不遠處)。</li>
+                    <li>亮點：建於 1220 年，是挪威現存 28 座木板教堂中最大、保存最好的之一。那鮮紅色的尖塔在綠色山谷中非常顯眼，必停！</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:00 - 17:00 | 飛躍極限：里爾哈默跳台 (Lysgårdsbakken)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：1994 年冬奧會的滑雪跳台。</li>
+                    <li>體驗：您可以爬樓梯（或搭纜車）到跳台頂端。從頂端俯瞰 Mjøsa 湖和里爾哈默市區，想像選手從這裡滑下去的勇氣。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">19:30 - 20:00 | 抵達飯店 & 停車大作戰</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>住宿：**Clarion Hotel The Hub** - 位於奧斯陸正市中心 (Jernbanetorget)，就在中央車站對面。</li>
+                    <li>停車攻略 (重要)：這家飯店**沒有**附設專屬免費停車場。建議：直接開進飯店地下的 **Oslo City P-hus** 或旁邊的 **Gunerius P-hus**。費用非常昂貴 (每晚約 400-600 NOK)，但這是市中心最方便的選擇。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">20:00 - 21:30 | 慶功晚宴：奧斯陸之夜</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>晚餐：**Fiskeriet Youngstorget** (步行 5 分鐘) - 這是奧斯陸著名的魚舖兼餐廳，炸魚薯條 (Fish & Chips) 和魚湯是全城最佳。**Pincho Nation** (就在飯店對面) - 馬戲團風格的 Tapas 餐廳，氣氛歡樂。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>關於「快速路線 (Rv3)」的備案：如果您今天早上 09:30 之後才出發，可以轉 **Rv3** 公路。Rv3 的唯一亮點是 **Storelgen (巨大的銀色駝鹿雕像)**。這條路會比 E6 快約 40-50 分鐘。</li>
+                    <li>還車前準備 (隔天任務預演)：加油：奧斯陸市中心的加油站較少且貴。建議在進城前就把油加滿。清潔：把車內的垃圾清乾淨。</li>
+                    <li>飯店頂樓酒吧：The Hub 的頂樓酒吧 **Norda** 視野極佳，可以看到奧斯陸歌劇院和峽灣。如果不累，睡前上去喝一杯。</li>
+                </ul>
+            `},
+            { day: 17, title: "奧斯陸：維京精神與現代美學", region: 3, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D17 (7/20) 行程總覽：維京精神與現代美學</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**Bygdøy 渡輪**、**弗拉姆極地船** (Fram)、**奧斯陸市政廳** (諾貝爾獎頒獎地)、**歌劇院屋頂漫步**</p>
+                <p>奧斯陸 (Oslo) 是一座將現代建築與維京歷史完美融合的城市。今天的行程將分為「Bygdøy 博物館島的航海探險」與「市中心建築巡禮」兩部分。</p>
+                <p>**⚠️ 導遊重要通知：** 您的行程中提到的 **維京船博物館 (Viking Ship Museum)** 目前 **全面關閉進行大規模重建**（預計 2027 年才重新開放）。**替代方案：** 建議改為參觀就在弗拉姆博物館隔壁的 **Kon-Tiki 博物館 (康提基號)** 或 **挪威海事博物館**。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 09:45 | 晨間散步至碼頭</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：從 Hotel The Hub 步行前往**市政廳碼頭** (Rådhusbrygge 3)，步行約 15 分鐘。</li>
+                    <li>交通：**Bygdøyfergene (博物館渡輪)**。這段 15 分鐘的航程可以從海上欣賞奧斯陸的城市天際線。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:00 - 11:30 | 極地探險：弗拉姆極地船博物館 (Fram Museum)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>亮點：您可以**親自登上**這艘世界上最強固的木造極地船「**Fram 號**」，參觀南森與阿蒙森當年生活過的船艙。</li>
+                    <li>每小時有極光秀與模擬極地風暴體驗，非常身歷其境。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">11:30 - 12:30 | 航海接力：Kon-Tiki 博物館 (替代維京船博物館)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：就在 Fram 博物館正對面。</li>
+                    <li>亮點：這裡展示了傳奇探險家 Thor Heyerdahl 的 **Kon-Tiki (木筏)** 和 **Ra II (紙莎草船)**。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">13:00 - 14:15 | 碼頭午餐：Aker Brygge</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Aker Brygge 區域** (就在市政廳旁)。</li>
+                    <li>推薦：想吃海鮮可以去 **Lofoten Fiskerestaurant**，享受奧斯陸夏日的港灣氛圍。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:15 - 15:15 | 諾貝爾的榮耀：奧斯陸市政廳 (Oslo City Hall)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>亮點：**免費參觀**。主大廳 (The Great Hall) 是每年 12 月 10 日 **諾貝爾和平獎頒獎典禮** 的舉辦地。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">15:15 - 16:30 | 和平的呼喚：諾貝爾和平中心 (Nobel Peace Center)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：參觀關於歷屆和平獎得主的展覽。這裡的「諾貝爾庭園」(光纖花園) 非常夢幻，是必拍景點。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">17:00 - 18:30 | 冰山漫步：奧斯陸歌劇院 (Oslo Opera House)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：這座建築像一座浮在海面上的冰山。</li>
+                    <li>必做：沿著斜坡直接**走上屋頂**。這是奧斯陸最開放的公共空間，可以 360 度俯瞰奧斯陸峽灣和新興的「條碼建築群 (Barcode Project)」。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:30 - 20:00 | 告別晚宴</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>推薦地點：**Oslo Street Food** (由舊公共泳池改建的美食廣場)，或 **Ekebergrestauranten** (景觀餐廳，需搭電車)。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>關於 Oslo Pass (奧斯陸卡)：如果您參觀 2-3 個博物館加上渡輪，買 **Oslo Pass** 比較省事，包含所有大眾運輸 (含渡輪)。</li>
+                    <li>市政廳開放時間：市政廳有時會因為官方活動臨時關閉。如果遇到關閉，從外面欣賞建築上的木雕和浮雕也很有意思。</li>
+                    <li>購物最後衝刺：因為是週日 (7/20)，奧斯陸大部分商店（包括 Karl Johans gate 上的百貨公司）**都是休息的**。只有紀念品店和部分餐廳會開。</li>
+                </ul>
+            `},
+            { day: 18, title: "再見奧斯陸：藝術巡禮與海上移動", region: 3, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D18 (7/21) 行程總覽：藝術巡禮與海上移動</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**維吉蘭人生雕塑**、**蒙克《吶喊》**、**DFDS 郵輪**、**告別挪威**</p>
+                <p>這是此次北歐壯遊的轉折點。上午我們將把握最後時光，造訪奧斯陸兩大藝術聖地。下午則要處理還車事宜，並搭乘過夜遊輪前往丹麥哥本哈根。由於遊輪 **16:30** 準時開船，務必在 **15:00** 前完成還車與抵達碼頭。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">08:30 - 09:00 | 晨間出發 & 退房</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>行李策略：既然還有車，請將所有行李搬上車。我們將開車前往景點，最後直接開去還車，省去寄放行李的麻煩。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 10:30 | 人生的縮影：維吉蘭雕塑公園 (Vigelandsparken)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：開車前往 (約 10-15 分鐘)。公園門口有付費停車場。</li>
+                    <li>參觀重點：
+                        <ul>
+                            <li>**憤怒的小孩 (Sinnataggen)**：位於橋上左側，是公園的人氣王。</li>
+                            <li>**人生柱 (Monolitten)**：由 121 個交纏的人體雕刻而成，象徵人類奮力向上的渴望。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">11:00 - 13:00 | 靈魂的畫布：蒙克美術館 (MUNCH)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：這棟建築頂部彎曲的灰色大樓就在歌劇院旁。</li>
+                    <li>參觀重點：**《吶喊 (The Scream)》**：博物館收藏了三個版本的吶喊，每小時會輪流展示其中一幅。</li>
+                    <li>頂樓景觀：別忘了去頂樓酒吧/觀景台看一眼奧斯陸峽灣的景色。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:00 - 15:00 | 關鍵任務：還車 & 前往碼頭</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>DFDS 碼頭位置：位於 **Vippetangen (Utstikker 2)**。</li>
+                    <li>還車地點確認：請務必檢查您的租車合約！大部分租車公司的還車點都在**奧斯陸中央車站 (Oslo S)** 或市中心車庫，碼頭現場通常沒有還車櫃檯。如果是這樣，請先開去市區還車，然後搭計程車 (約 5 分鐘) 或步行 (約 15-20 分鐘) 到碼頭。</li>
+                    <li>加油：進市區前記得把油加滿。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">15:00 - 16:00 | DFDS 遊輪登船 (Check-in)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：DFDS Terminalen Oslo (Akershusstranda 31)。</li>
+                    <li>最後登船時間：通常是開船前 15-20 分鐘 (16:15)，但**強烈建議 15:30 前抵達**。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:30 - 18:00 | 啟航：告別奧斯陸峽灣</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>必做：務必待在甲板上！船會緩緩駛離奧斯陸，這是拍攝奧斯陸歌劇院、蒙克美術館和市政廳的最佳海上視角。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:00 - 20:00 | 海上晚餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>晚餐：船上有 **7 Seas Buffet** (著名的海鮮自助餐) 或 **Explorer Restaurant** (牛排館)。自助餐通常需要提前預訂時段，建議在訂船票時一併預訂。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>DFDS 房型建議：如果預算允許，建議升級到 **Commodore Class (準將級)** 或有窗戶的 **Seaview Cabin**。</li>
+                    <li>還車陷阱：奧斯陸市中心單行道多且正在進行許多道路工程，導航容易迷路。請預留至少 20-30 分鐘的「迷路緩衝時間」找還車入口。</li>
+                </ul>
+            `},
+            { day: 19, title: "哥本哈根：童話、皇室與彩色港灣", region: 3, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D19 (7/22) 行程總覽：童話、皇室與彩色港灣</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**DFDS 抵達**、**小美人魚** (The Little Mermaid)、**卡斯特雷特要塞** (Kastellet)、**阿馬林堡宮** (Amalienborg)、**新港** (Nyhavn) 運河遊船、**開放式三明治** (Smørrebrød)</p>
+                <p>經過一夜的波羅的海航行，我們將踏上這座充滿設計感與自行車文化的城市。今天的行程重點是「經典地標巡禮」。由於您今晚入住的 **Hotel Skt. Petri** 位於市中心最熱鬧的拉丁區，位置極佳。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:00 | 抵達哥本哈根</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**DFDS Terminalen** (Dampfærgevej 30)。</li>
+                    <li>導遊提醒：遊輪通常準時於 10:00 靠岸。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:30 - 11:15 | 前往飯店寄放行李</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：**計程車 (Taxi)**。強烈建議搭計程車前往 **Hotel Skt. Petri**，拖著大行李在石板路上走非常痛苦。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">11:15 - 11:45 | 前往小美人魚</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：地鐵 (Metro) + 步行。從飯店步行到 **Nørreport 站**，搭乘 S-tog 火車 (1 站) 到 **Østerport 站**。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">11:45 - 12:30 | 童話地標：小美人魚與星形要塞</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>景點 1：**小美人魚 (Den Lille Havfrue)** - 她比想像中更小（只有 1.25 公尺高）。</li>
+                    <li>景點 2：**卡斯特雷特要塞 (Kastellet)** - 是一個保存完好的五角星形軍事要塞，現在是美麗的公園。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">13:00 - 14:00 | 女王的家：阿馬林堡宮 (Amalienborg Slot)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>亮點：
+                        <ul>
+                            <li>**衛兵交接**：下午廣場上仍有皇家衛兵站崗。那標誌性的熊皮帽是必拍重點。</li>
+                            <li>**腓特烈教堂 (Marmorkirken)**：巨大的綠色銅圓頂教堂（大理石教堂），正對著皇宮中軸線，非常壯觀。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:15 - 16:30 | 哥本哈根縮影：新港 (Nyhavn) 午餐與遊船</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>午餐推薦：**Smørrebrød (丹麥開放式三明治)**。點一份經典的「炸魚排佐雷莫拉醬」或「北極甜蝦」三明治，配上一杯 Carlsberg 啤酒。</li>
+                    <li>活動：**運河遊船 (Canal Tour)** (約 60 分鐘)。從水面視角看歌劇院、黑鑽石圖書館等。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:30 - 17:30 | 漫步斯楚格街 (Strøget) 回飯店</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：進入世界最長的步行街之一：**Strøget**。這裡是購物天堂。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">19:00 - 20:30 | 晚餐：拉丁區美食</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>推薦：**Torvehallerne** (瓦埃勒市場) - 哥本哈根的高級大排檔。或 **Puk** - 一間建於 1750 年的老餐廳，提供傳統的丹麥脆皮豬肉 (Flæskesteg)。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通票券：哥本哈根市區景點非常集中，今天主要靠步行和一段地鐵/火車。您可以直接使用信用卡 (感應式) 在地鐵站買票。</li>
+                    <li>自行車文化：丹麥是自行車王國。**過馬路時請務必先看自行車道**，不要誤闖自行車專用道，這裡的騎士騎得飛快！</li>
+                    <li>小美人魚的心理建設：請把重點放在沿途的散步氛圍和卡斯特雷特要塞的景色，美人魚當作一個打卡點就好，才不會失望。</li>
+                </ul>
+            `},
+            { day: 20, title: "赫爾辛格：王子復仇記與海岸火車之旅", region: 3, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D20 (7/23) 行程總覽：王子復仇記與海岸火車之旅</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**海岸線火車** (Kystbanen)、**克倫堡宮** (Kronborg Slot)、**哈姆雷特** (Hamlet)、**造船廠美食街** (Værftets Madmarked)、**圓塔** (Rundetårn)</p>
+                <p>今天我們將暫時離開熱鬧的哥本哈根市區，前往北西蘭島（North Zealand），探訪莎士比亞筆下的名場景。這是一趟非常輕鬆且經典的火車小旅行。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:30 - 10:20 | 最美海岸鐵道：前往赫爾辛格</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：搭乘 **DSB 區域火車 (Regional Train)** 往 Helsingør 方向。</li>
+                    <li>**導遊私房秘技：** 上車請選**右側座位**！火車駛離市區後會沿著海岸線行駛，您可以一路欣賞厄勒海峽的蔚藍海景。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:45 - 13:00 | 莎士比亞的舞台：克倫堡宮 (Kronborg Slot)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>亮點：
+                        <ul>
+                            <li>**地下工事 (The Casemates)：** 這是重點！走進陰暗潮濕的地下通道。這裡藏著丹麥的守護神——「**霍爾格·丹斯克 (Holger Danske)**」的沉睡雕像。</li>
+                            <li>**哈姆雷特現場演出：** 7 月是旺季，城堡庭院或大廳內常有演員穿著古裝，隨機上演《哈姆雷特》的經典橋段。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">13:00 - 14:30 | 庶民美食盛宴：船廠美食街</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Værftets Madmarked (The Shipyard Food Market)**。就在克倫堡宮旁邊，由舊造船廠改建的工業風建築。</li>
+                    <li>午餐：這裡匯集了世界各地的街頭美食，氣氛非常熱鬧放鬆，價格也比餐廳親民。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:30 - 15:30 | 赫爾辛格老城漫步</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：繞進 **Stengade (石頭街)**。這條中世紀街道有許多歪歪斜斜的半木結構老房子。</li>
+                    <li>甜點：買一支 **Brostræde Is** 的巨無霸冰淇淋（這家店很有名，通常要排隊）。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:30 - 17:30 | 登高望遠：圓塔 (Rundetårn)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>特色：這是歐洲最古老的功能性天文台。</li>
+                    <li>體驗：這裡沒有樓梯，只有一條長長的**螺旋斜坡**直通塔頂（據說是為了讓國王能騎馬上去）。</li>
+                    <li>景觀：塔頂擁有哥本哈根市中心 360 度的紅瓦屋頂全景，是俯瞰這座城市的最佳位置。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">19:00 - 20:30 | 晚餐：新北歐料理或義式風味</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>推薦 2：**Olive Kitchen and Bar**。這是一家溫馨的家庭式餐廳，評價極高，建議預約。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>瑞典就在對岸：在赫爾辛格海邊，您會發現對岸的陸地近得不可思議（僅 4 公里）。那是瑞典的赫爾辛堡 (Helsingborg)。</li>
+                    <li>地下工事穿著：克倫堡宮的地下工事 (Casemates) 全年恆溫且陰涼潮濕，地面也不平整。建議穿好走的鞋子，怕冷的話帶件薄外套。</li>
+                    <li>火車票券：去赫爾辛格需要買 **"All Zones" (全區)** 的票。如果您有 **Copenhagen Card**，則交通和門票全包，是最划算的選擇。</li>
+                </ul>
+            `},
+            { day: 21, title: "奧登斯：走進安徒生的剪紙世界", region: 3, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D21 (7/24) 行程總覽：走進安徒生的剪紙世界</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**跨海火車**、**全新的安徒生博物館** (H.C. Andersens Hus)、**鵝卵石老街**、**菲英島特產 Brunsviger 蛋糕**</p>
+                <p>我們要跨越宏偉的**大貝爾特海峽（Great Belt）**，前往全世界最著名的童話作家——安徒生（Hans Christian Andersen）的故鄉：**奧登斯 (Odense)**。全新的安徒生博物館非常驚艷。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 10:20 | 跨海火車：哥本哈根 → 奧登斯</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：**DSB InterCity (IC) 或 Lyntog (閃電列車)**。車程：約 1 小時 15 分鐘。</li>
+                    <li>體驗：火車會行駛在 **大貝爾特大橋 (Storebæltsbroen)** 上，看著窗外遼闊的海景，非常療癒。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:45 - 13:30 | 建築與文學的奇蹟：新安徒生博物館 (H.C. Andersens Hus)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：這是 2021 年才全新開幕的世界級博物館，由日本建築大師**隈研吾**設計。</li>
+                    <li>體驗：這是一個結合聲音、燈光和建築的**沉浸式體驗空間**。您會「走進」《小美人魚》、《賣火柴的小女孩》等故事場景中。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">13:30 - 14:30 | 午餐：百年老街的風味</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>推薦地點：**Den Gamle Kro (老客棧)** - 這是一棟建於 1683 年的歪斜半木結構建築，氣氛滿分。</li>
+                    <li>必吃：丹麥傳統料理，如 **Æggekage (丹麥蛋餅)**。這是菲英島的特色菜。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:30 - 15:30 | 童話小鎮漫步：安徒生故居區</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>活動：這裡保留了 19 世紀初的鵝卵石街道和低矮的彩色平房。</li>
+                    <li>尋找腳印：地面上會有**紅色的太陽臉標誌**（源自安徒生的剪紙作品），跟著它走就不會迷路。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:30 - 17:00 | 下午茶：菲英島的靈魂</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>必吃：**Brunsviger 蛋糕**。這是一種撒滿黑糖和奶油的發酵麵包蛋糕，是奧登斯人從小吃到大的味道。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">17:00 - 17:30 | 漫步回車站</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>路線：沿途會經過 **聖庫努德大教堂 (Sankt Knuds Kirke)**，這是一座宏偉的哥德式紅磚教堂。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">17:30 - 19:00 | 返回哥本哈根</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通：搭乘火車返回哥本哈根中央車站或 Nørreport。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">19:00 - 20:30 | 晚餐：哥本哈根的亞洲風味或牛排</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>推薦：**Sticks'n'Sushi** (就在飯店樓下或附近) - 丹麥非常著名的日式串燒與壽司連鎖店。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>火車票攻略：建議提前在 **DSB App** 或官網購買 **"Orange Ticket" (橘色票)**，這是早鳥優惠票，價格可能只有原價的 1/3。</li>
+                    <li>安徒生博物館預約：7月是旅遊旺季，新博物館有人流管制。**強烈建議提前上網預訂入場時段**。</li>
+                    <li>行李提醒：今天的行程是「輕裝一日遊」，請將大行李留在哥本哈根的飯店，只帶隨身背包即可。</li>
+                </ul>
+            `},
+            { day: 22, title: "冬日花園：皇冠、藝術與螺旋尖塔", region: 3, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D22 (7/25) 行程總覽：皇冠、藝術與螺旋尖塔</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**羅森堡宮** (Rosenborg Slot)、**國王花園** (Kongens Have)、**Torvehallerne** 美食廣場、**新嘉士伯美術館** (Ny Carlsberg Glyptotek)、**救主堂** (Vor Frelsers Kirke)</p>
+                <p>今天是我們在哥本哈根的最後一天，也是深度探索這座城市文化靈魂的時刻。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 詳細時間軸規劃</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:00 - 12:00 | 皇室寶藏：羅森堡宮 (Rosenborg Slot)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>選擇原因：相比國家博物館，羅森堡宮更具視覺震撼力，且距離您的飯店更近。</li>
+                    <li>必看亮點：
+                        <ul>
+                            <li>**地下寶庫：** 這是絕對不能錯過的！展示了丹麥皇室的王冠、權杖和珠寶，閃耀奪目。</li>
+                            <li>**騎士大廳 (The Knights' Hall)：** 位於頂樓，有三個銀獅子守護著加冕寶座。</li>
+                            <li>**國王花園 (Kongens Have)：** 參觀完城堡後，在城堡外的玫瑰園散步。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:00 - 13:30 | 哥本哈根的廚房：Torvehallerne</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>午餐：這兩座玻璃帷幕的市場建築內匯集了最好的丹麥食材。</li>
+                    <li>推薦：**Hallernes Smørrebrød** (開放式三明治精緻得像藝術品)、**Grød** (全球第一家只賣「粥」的店)、**Coffee Collective** (丹麥世界冠軍烘焙的咖啡)。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:00 - 16:00 | 雕塑與棕櫚樹：新嘉士伯美術館 (Ny Carlsberg Glyptotek)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>特色：由嘉士伯啤酒創辦人建立的私人美術館。</li>
+                    <li>必看：
+                        <ul>
+                            <li>**冬日花園 (Winter Garden)：** 進門就會看到巨大的玻璃圓頂下種滿了棕櫚樹，是哥本哈根最美的室內空間。</li>
+                            <li>**雕塑收藏：** 擁有北歐最大的羅丹 (Rodin) 雕塑收藏。</li>
+                            <li>**法國繪畫：** 收藏了高更、梵谷和莫內的真跡。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">16:30 - 17:30 | 挑戰極限：救主堂 (Vor Frelsers Kirke)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>重要提醒：**必須提前上網預約時段**，現場排隊可能買不到票。</li>
+                    <li>體驗：這座教堂最著名的是那座**外部螺旋樓梯**。最後 150 階是在塔尖的外面，沒有玻璃防護，只有欄杆！這是俯瞰哥本哈根「橋區」和港口運河的最佳視角。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">17:30 - 18:30 | 克里斯蒂安港 (Christianshavn) 漫步</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>氛圍：這一區被稱為「小阿姆斯特丹」，運河兩旁停滿了帆船和船屋。</li>
+                    <li>自由城 (Fristaden Christiania)：如果有興趣，可以走到附近的克里斯蒂安尼亞自由城入口看看（注意：內部主要區域禁止拍照，氛圍獨特，請遵守當地規則）。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">18:30 - 20:30 | 告別晚餐</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>推薦地點：**Christianshavn 運河邊**。餐廳：**Kanalen** (運河邊的舊倉庫裡，氣氛浪漫，提供精緻丹麥菜)。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊的私房錦囊 (Tips)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>救主堂的勇氣測試：螺旋塔樓非常狹窄且高，如果您有嚴重的懼高症，建議爬到塔樓內部的觀景台就好。</li>
+                    <li>Copenhagen Card (哥本哈根卡)：今天參觀的羅森堡宮、Glyptoteket 和救主堂都包含在 Copenhagen Card 內。如果您昨天有買 48 小時卡，今天依然可以用，非常划算。</li>
+                    <li>行李最後檢查：今晚可以去飯店附近的 Irma 或 Netto 超市，買一些丹麥著名的 **Anthon Berg 巧克力** 或 **奶油餅乾** 當作最後的伴手禮。</li>
+                </ul>
+            `},
+            { day: 23, title: "返家：最後的丹麥時光", region: 3, 
+                details: `
+                <h3 class="text-2xl font-bold text-white mb-2 border-b border-gray-700 pb-2">📅 D23 (7/26) 行程總覽：最後的丹麥時光與返程</h3>
+                <p class="text-sm text-gray-400 mb-3">今日關鍵字：**國王花園晨間散步**、**最後的肉桂捲**、**地鐵 M2 線**、**哥本哈根機場** (CPH) **退稅**</p>
+                <p>這是行程的最後一天。由於您的班機是 **14:25**，建議在 **11:25** 左右抵達機場。這意味著您在飯店早餐後，還有大約 **1.5 到 2 小時** 的早晨時光可以在市區做最後的巡禮。</p>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">📋 上午活動建議 (09:00 - 10:40)</h3>
+                
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">09:00 - 10:30 | 城市綠洲最後巡禮 (二選一)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>**選項 A：國王花園 (Kongens Have)** - 這是哥本哈根最古老的皇家花園。遠遠眺望 **羅森堡宮** 的塔尖，與這座美麗的童話城堡道別。</li>
+                    <li>**選項 B：哥本哈根植物園 (Botanisk Have)** - 欣賞那座著名的 19 世紀白色玻璃溫室 (Palm House) 的倒影。這裡非常寧靜，適合整理思緒。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">10:30 - 10:45 | 最後的甜蜜補給</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>地點：**Lagkagehuset** (Nørreport 車站旁就有)。</li>
+                    <li>任務：買幾個 **Kanelsnegl (肉桂捲)** 或 **Tebirkes (罌粟籽丹麥酥)**。帶去機場候機時吃，或帶回台灣給家人嚐嚐最道地的丹麥滋味。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">✈️ 前往機場交通與流程 (10:45 - 14:25)</h3>
+                <p class="text-sm text-gray-400 mb-3">目標：11:25 抵達哥本哈根機場 (CPH)。</p>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">11:00 | 搭乘地鐵 (最推薦方式)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>交通工具：**哥本哈根地鐵 (Metro) - M2 線**。</li>
+                    <li>方向：往 **Lufthavnen (Airport)** 方向。</li>
+                    <li>車程：僅需 **13-15 分鐘** 直達機場。優勢：班次極多（每 4-6 分鐘一班），且 Nørreport 車站有電梯直達月台。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">11:25 - 12:10 | 辦理退稅 (Global Blue / Planet)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>導遊重要提醒：如果您在挪威或丹麥有買退稅商品，**請在托運行李前先辦理退稅**（有些商品可能需要檢查）。</li>
+                    <li>位置：退稅櫃台通常位於 **Terminal 3** 或 Terminal 2 的出發層。7月遊客多，可能需要排隊。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">12:40 - 14:00 | 安檢 & 機場最後購物</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>哥本哈根機場被譽為「世界上最好逛的機場」之一。</li>
+                    <li>設計巡禮：管制區內有許多丹麥設計品牌 (Hay, Georg Jensen, Lego) 和免稅店。</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-teal-400 mt-4 mb-2">14:25 | 起飛 (Farvel Danmark!)</h4>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>帶著滿滿的回憶，起飛返回溫暖的家。</li>
+                </ul>
+
+                <h3 class="text-2xl font-bold text-white mt-6 mb-2 border-b border-gray-700 pb-2">💡 導遊最後的叮嚀</h3>
+                <ul class-="list-disc list-inside ml-4 space-y-1 text-sm text-gray-300">
+                    <li>退稅單據整理：昨晚在飯店請務必把所有來自挪威和丹麥的退稅單據 (Tax Free Forms) 填寫完整，不要到了機場櫃檯才手忙腳亂地寫。</li>
+                    <li>剩餘克朗：如果手邊還有丹麥克朗 (DKK) 硬幣，可以在機場買水或巧克力花掉，台灣銀行通常不收硬幣。</li>
+                </ul>
+            `
+            }
+        ];
+
+        function renderRows() {
+            itineraryData.forEach(item => {
+                const rowId = `row-${item.region}`;
+                const rowEl = document.getElementById(rowId);
+                
+                // 自動補零邏輯：1 -> 01, 15 -> 15
+                const dayStr = item.day.toString().padStart(2, '0');
+                const thumbnailName = `day${dayStr}.jpg`;
+                
+                const card = document.createElement('div');
+                card.className = 'card group';
+                // 傳入 dayStr 以便 openModal 使用
+                card.onclick = () => openModal(item, dayStr);
+                
+                card.innerHTML = `
+                    <div class="relative w-full aspect-video bg-gray-800">
+                        <img src="${thumbnailName}" 
+                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 relative z-10" 
+                             onload="this.style.display='block'; this.nextElementSibling.style.display='none';"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        
+                        <div class="absolute inset-0 flex flex-col items-center justify-center h-full text-gray-600 bg-gray-900 z-0 hidden">
+                            <i class="fas fa-image text-3xl mb-2"></i>
+                            <span class="text-xs font-mono">Missing: ${thumbnailName}</span>
+                        </div>
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 z-20 pointer-events-none transition-opacity group-hover:opacity-90"></div>
+                        <div class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow z-30">D${item.day}</div>
+                        <div class="absolute bottom-0 left-0 w-full p-3 z-30 pointer-events-none transform transition-transform group-hover:-translate-y-1">
+                            <h3 class="text-sm font-bold text-white mb-1 drop-shadow-md leading-tight">${item.title.split('：')[1] || item.title}</h3>
+                        </div>
+                    </div>
+                `;
+                rowEl.appendChild(card);
+            });
+        }
+
+        // 開啟 Modal
+        function openModal(item, dayStr) {
+            const modal = document.getElementById('detail-modal');
+            const scheduleFilename = `schedule${dayStr}.jpg`; // 這裡自動抓取 scheduleXX.jpg
+            
+            // 設定標題與文字
+            document.getElementById('modal-day-badge').innerText = `DAY ${item.day}`;
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-text-content').innerHTML = item.details; // 注入詳細文字
+            document.getElementById('missing-schedule-name').innerText = scheduleFilename;
+
+            // 設定 Layer 3 圖片
+            const schedImg = document.getElementById('modal-schedule-img');
+            schedImg.src = scheduleFilename;
+            
+            // 重置視圖：預設先看圖片 (View A)
+            document.getElementById('view-schedule').classList.remove('hidden');
+            document.getElementById('view-text').classList.add('hidden');
+            document.getElementById('view-text').classList.remove('flex');
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 切換視圖 (Layer 3 <-> Layer 4)
+        function switchView(viewName) {
+            const viewSched = document.getElementById('view-schedule');
+            const viewText = document.getElementById('view-text');
+            
+            if (viewName === 'text') {
+                // 進入文字模式
+                viewSched.classList.add('hidden');
+                viewText.classList.remove('hidden');
+                viewText.classList.add('flex');
+            } else {
+                // 返回圖片模式
+                viewText.classList.add('hidden');
+                viewText.classList.remove('flex');
+                viewSched.classList.remove('hidden');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        renderRows();
+        
+        function scrollToContent() {
+            document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
