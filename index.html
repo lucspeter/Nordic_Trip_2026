@@ -152,15 +152,15 @@
                         <i class="fas fa-arrow-left mr-2"></i> 返回行程圖
                     </button>
 
-                    <div class="overflow-y-auto h-full p-8 md:p-16 max-w-4xl mx-auto">
-                        <div class="prose prose-invert prose-lg max-w-none">
-                            <h2 class="text-3xl font-bold text-teal-400 mb-6 border-b border-gray-700 pb-4">
-                                <i class="fas fa-map-marked-alt mr-3"></i>當日詳細導覽
-                            </h2>
-                            <div id="modal-text-content" class="text-gray-300 leading-relaxed space-y-6">
-                                載入中...
-                            </div>
-                        </div>
+                    <div class="relative max-w-full max-h-full cursor-pointer" onclick="switchView('text')">
+    <img id="modal-schedule-img" src="" class="max-h-[80vh] object-contain shadow-2xl" 
+         onload="this.style.display='block'; document.getElementById('sched-error').style.display='none';"
+         onerror="this.style.display='none'; document.getElementById('sched-error').style.display='flex';">
+    
+    <div class="fixed top-4 right-16 z-50 bg-white/90 text-black px-6 py-3 rounded-full font-bold transform scale-90 group-hover:scale-100 transition shadow-lg click-hint opacity-0 group-hover:opacity-100">
+        <i class="fas fa-book-open mr-2"></i> 點擊閱讀詳細文字導覽
+    </div>
+</div>
                         
                         <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
                             <p>2026 Nordic Journey • Day Log</p>
