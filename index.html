@@ -139,7 +139,15 @@
 
             <div id="view-schedule" class="w-full h-full flex flex-col items-center justify-center bg-black relative group transition-opacity duration-300">
     
-    index.html
+    <div class="relative max-w-full max-h-full cursor-pointer" onclick="switchView('text')">
+    <img id="modal-schedule-img" src="" class="max-h-[80vh] object-contain shadow-2xl" 
+         onload="this.style.display='block'; document.getElementById('sched-error').style.display='none';"
+         onerror="this.style.display='none'; document.getElementById('sched-error').style.display='flex';">
+    
+    <div class="absolute top-2 right-2 bg-white/90 text-black px-6 py-3 rounded-full font-bold transform scale-90 group-hover:scale-100 transition shadow-lg click-hint opacity-0 group-hover:opacity-100">
+        <i class="fas fa-book-open mr-2"></i> 點擊閱讀詳細文字導覽
+    </div>
+</div>
 
                     <div id="sched-error" class="hidden flex-col items-center justify-center text-gray-500 absolute inset-0">
                         <i class="fas fa-image text-5xl mb-4"></i>
